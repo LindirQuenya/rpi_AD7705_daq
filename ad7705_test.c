@@ -36,6 +36,7 @@ static uint8_t mode = SPI_CPHA | SPI_CPOL;;
 static uint8_t bits = 8;
 static uint32_t speed = 50000;
 static uint16_t delay = 10;
+static int drdy_GPIO = 22; //RPI_V2_GPIO_P1_22;
 
 static void writeReset(int fd)
 {
@@ -171,7 +172,10 @@ int main(int argc, char *argv[])
 
 	// enable master clock for the AD
 	// divisor results in roughly 4.9MHz
+	// this also inits the general purpose IO
 	gz_clock_ena(GZ_CLK_5MHz,5);
+
+	bcm2835_gpio_fsel(drdy_GPIO, BCM2835_GPIO_FSEL_INPT);
 
 	// resets the AD7705 so that it expects a write to the communication register
 	writeReset(fd);
@@ -190,13 +194,10 @@ int main(int argc, char *argv[])
 	while (1) {
 	  int d=0;
 	  do {
-	    // tell the AD7705 to send back the communications register
-	    writeReg(fd,0x08);
-	    // we get the communications register
-	    d = readReg(fd);
-	    // fprintf(stderr,"DRDY = %d\n",d);
+	    // read /DRDY of the AD converter
+	    d = bcm2835_gpio_lev(drdy_GPIO);
 	    // loop while /DRDY is high
-	  } while ( d & 0x80 );
+	  } while ( d );
 	  
 	  // tell the AD7705 to read the data register (16 bits)
 	  writeReg(fd,0x38);
