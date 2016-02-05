@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2007  MontaVista Software, Inc.
  * Copyright (c) 2007  Anton Vorontsov <avorontsov@ru.mvista.com>
- * Copyright (c) 2013  Bernd Porr <mail@berndporr.me.uk>
+ * Copyright (c) 2013-2015  Bernd Porr <mail@berndporr.me.uk>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@
 #include "gz_clk.h"
 #include "gpio-sysfs.h"
 
-#define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 
 static void pabort(const char *s)
 {
@@ -35,8 +34,6 @@ static void pabort(const char *s)
 static const char *device = "/dev/spidev0.0";
 static uint8_t mode = SPI_CPHA | SPI_CPOL;;
 static uint8_t bits = 8;
-static uint32_t speed = 50000;
-static uint16_t delay = 10;
 static int drdy_GPIO = 22;
 
 static void writeReset(int fd)
@@ -45,16 +42,17 @@ static void writeReset(int fd)
   uint8_t tx1[5] = {0xff,0xff,0xff,0xff,0xff};
   uint8_t rx1[5] = {0};
   struct spi_ioc_transfer tr;
+
+  memset(&tr,0,sizeof(struct spi_ioc_transfer));
   tr.tx_buf = (unsigned long)tx1;
   tr.rx_buf = (unsigned long)rx1;
-  tr.len = ARRAY_SIZE(tx1);
-  tr.delay_usecs = delay;
-  tr.speed_hz = speed;
-  tr.bits_per_word = bits;
-  
+  tr.len = sizeof(tx1);
+
   ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
-  if (ret < 1)
-    pabort("can't send spi message");
+  if (ret < 1) {
+    printf("\nerr=%d when trying to reset. \n",ret);
+    pabort("Can't send spi message");
+  }
 }
 
 static void writeReg(int fd, uint8_t v)
@@ -64,12 +62,11 @@ static void writeReg(int fd, uint8_t v)
   tx1[0] = v;
   uint8_t rx1[1] = {0};
   struct spi_ioc_transfer tr;
+
+  memset(&tr,0,sizeof(struct spi_ioc_transfer));
   tr.tx_buf = (unsigned long)tx1;
   tr.rx_buf = (unsigned long)rx1;
-  tr.len = ARRAY_SIZE(tx1);
-  tr.delay_usecs = delay;
-  tr.speed_hz = speed;
-  tr.bits_per_word = bits;
+  tr.len = sizeof(tx1);
 
   ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
   if (ret < 1)
@@ -83,12 +80,11 @@ static uint8_t readReg(int fd)
 	tx1[0] = 0;
 	uint8_t rx1[1] = {0};
 	struct spi_ioc_transfer tr;
+
+	memset(&tr,0,sizeof(struct spi_ioc_transfer));
 	tr.tx_buf = (unsigned long)tx1;
 	tr.rx_buf = (unsigned long)rx1;
-	tr.len = ARRAY_SIZE(tx1);
-	tr.delay_usecs = delay;
-	tr.speed_hz = speed;
-	tr.bits_per_word = 8;
+	tr.len = sizeof(tx1);
 
 	ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
 	if (ret < 1)
@@ -103,16 +99,18 @@ static int readData(int fd)
 	uint8_t tx1[2] = {0,0};
 	uint8_t rx1[2] = {0,0};
 	struct spi_ioc_transfer tr;
+
+	memset(&tr,0,sizeof(struct spi_ioc_transfer));
 	tr.tx_buf = (unsigned long)tx1;
 	tr.rx_buf = (unsigned long)rx1;
-	tr.len = ARRAY_SIZE(tx1);
-	tr.delay_usecs = delay;
-	tr.speed_hz = speed;
-	tr.bits_per_word = 8;
+	tr.len = sizeof(tx1);
 
 	ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
 	if (ret < 1)
-	  pabort("can't send spi message");
+          {
+	  printf("\n can't send spi message, ret = %d\n",ret);
+          exit(1);
+          }
 	  
 	return (rx1[0]<<8)|(rx1[1]);
 }
@@ -152,20 +150,8 @@ int main(int argc, char *argv[])
 	if (ret == -1)
 		pabort("can't get bits per word");
 
-	/*
-	 * max speed hz
-	 */
-	ret = ioctl(fd, SPI_IOC_WR_MAX_SPEED_HZ, &speed);
-	if (ret == -1)
-		pabort("can't set max speed hz");
-
-	ret = ioctl(fd, SPI_IOC_RD_MAX_SPEED_HZ, &speed);
-	if (ret == -1)
-		pabort("can't get max speed hz");
-
 	fprintf(stderr, "spi mode: %d\n", mode);
 	fprintf(stderr, "bits per word: %d\n", bits);
-	fprintf(stderr, "max speed: %d Hz (%d KHz)\n", speed, speed/1000);
 
 	// enable master clock for the AD
 	// divisor results in roughly 4.9MHz
@@ -182,6 +168,7 @@ int main(int argc, char *argv[])
 	sysfs_fd = gpio_fd_open(drdy_GPIO);
 
 	// resets the AD7705 so that it expects a write to the communication register
+        printf("sending reset\n");
 	writeReset(fd);
 
 	// tell the AD7705 that the next write will be to the clock register
