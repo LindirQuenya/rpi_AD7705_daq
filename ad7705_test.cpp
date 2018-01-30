@@ -32,26 +32,31 @@ static void pabort(const char *s)
 }
 
 static const char *device = "/dev/spidev0.0";
-static uint8_t mode = SPI_CPHA | SPI_CPOL;;
-static uint8_t bits = 8;
-static int drdy_GPIO = 22;
-static uint32_t speed = 500000;
-static uint16_t delay = 0;
+static const uint8_t mode = SPI_CPHA | SPI_CPOL;
+static const int drdy_GPIO = 22;
+static const uint32_t speed = 500000;
+static const uint16_t delay = 0;
+static const uint8_t bpw   = 8;
 
-static void writeReset(int fd) {
-	int ret;
-	uint8_t tx1[5] = {0xff,0xff,0xff,0xff,0xff};
-	uint8_t rx1[5] = {0};
+static int spi_transfer(int fd, uint8_t* tx, uint8_t* rx, int n) {
 	struct spi_ioc_transfer tr;
-	
 	memset(&tr,0,sizeof(struct spi_ioc_transfer));
-	tr.tx_buf = (unsigned long)tx1;
-	tr.rx_buf = (unsigned long)rx1;
-	tr.len = sizeof(tx1);
+	tr.tx_buf = (unsigned long)tx;
+	tr.rx_buf = (unsigned long)rx;
+	tr.len = n;
 	tr.delay_usecs = delay;
 	tr.speed_hz = speed;
-	
-	ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
+	tr.bits_per_word = bpw;	
+	int ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
+	return ret;
+}
+
+static void writeReset(int fd) {
+	uint8_t tx[5] = {0xff,0xff,0xff,0xff,0xff};
+	uint8_t rx[5] = {0};
+
+	int ret = spi_transfer(fd, tx, rx, 5);
+
 	if (ret < 1) {
 		printf("\nerr=%d when trying to reset. \n",ret);
 		pabort("Can't send spi message");
@@ -59,65 +64,37 @@ static void writeReset(int fd) {
 }
 
 static void writeReg(int fd, uint8_t v) {
-	int ret;
-	uint8_t tx1[1];
-	tx1[0] = v;
-	uint8_t rx1[1] = {0};
-	struct spi_ioc_transfer tr;
-	
-	memset(&tr,0,sizeof(struct spi_ioc_transfer));
-	tr.tx_buf = (unsigned long)tx1;
-	tr.rx_buf = (unsigned long)rx1;
-	tr.len = sizeof(tx1);
-	tr.delay_usecs = delay;
-	tr.speed_hz = speed;
-	
-	ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
+	uint8_t tx = v;
+	uint8_t rx = 0;
+
+	int ret = spi_transfer(fd, &tx, &rx, 1);
 	if (ret < 1)
 		pabort("can't send spi message");
 }
 
 static uint8_t readReg(int fd) {
-	int ret;
-	uint8_t tx1[1];
-	tx1[0] = 0;
-	uint8_t rx1[1] = {0};
-	struct spi_ioc_transfer tr;
-	
-	memset(&tr,0,sizeof(struct spi_ioc_transfer));
-	tr.tx_buf = (unsigned long)tx1;
-	tr.rx_buf = (unsigned long)rx1;
-	tr.len = sizeof(tx1);
-	tr.delay_usecs = delay;
-	tr.speed_hz = speed;
-	
-	ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
+	uint8_t tx = 0;
+	uint8_t rx = 0;
+
+	int ret = spi_transfer(fd, &tx, &rx, 1);
 	if (ret < 1)
 		pabort("can't send spi message");
 	
-	return rx1[0];
+	return rx;
 }
 
 static int readData(int fd) {
 	int ret;
-	uint8_t tx1[2] = {0,0};
-	uint8_t rx1[2] = {0,0};
-	struct spi_ioc_transfer tr;
+	uint8_t tx[2] = {0,0};
+	uint8_t rx[2] = {0,0};
 
-	memset(&tr,0,sizeof(struct spi_ioc_transfer));
-	tr.tx_buf = (unsigned long)tx1;
-	tr.rx_buf = (unsigned long)rx1;
-	tr.len = sizeof(tx1);
-	tr.delay_usecs = delay;
-	tr.speed_hz = speed;
-
-	ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
+	ret = spi_transfer(fd, tx, rx, 2);
 	if (ret < 1) {
 		printf("\n can't send spi message, ret = %d\n",ret);
 		exit(1);
 	}
 	  
-	return (rx1[0]<<8)|(rx1[1]);
+	return (rx[0]<<8)|(rx[1]);
 }
 
 
@@ -126,8 +103,6 @@ int main(int argc, char *argv[]) {
 	int fd;
 	int sysfs_fd;
 
-	int no_tty = !isatty( fileno(stdout) );
-	
 	fd = open(device, O_RDWR);
 	if (fd < 0)
 		pabort("can't open device");
@@ -136,31 +111,17 @@ int main(int argc, char *argv[]) {
 	 * spi mode
 	 */
 	ret = ioctl(fd, SPI_IOC_WR_MODE, &mode);
-	if (ret == -1)
+	if (ret == -1) {
 		pabort("can't set spi mode");
-
-	ret = ioctl(fd, SPI_IOC_RD_MODE, &mode);
-	if (ret == -1)
-		pabort("can't get spi mode");
-
-	/*
-	 * bits per word
-	 */
-	ret = ioctl(fd, SPI_IOC_WR_BITS_PER_WORD, &bits);
-	if (ret == -1)
-		pabort("can't set bits per word");
-
-	ret = ioctl(fd, SPI_IOC_RD_BITS_PER_WORD, &bits);
-	if (ret == -1)
-		pabort("can't get bits per word");
-
-	fprintf(stderr, "spi mode: %d\n", mode);
-	fprintf(stderr, "bits per word: %d\n", bits);
+	} else {
+		fprintf(stderr,"SPI mode %d set (ret=%d).\n",mode,ret);
+	}
 
 	// enable master clock for the AD
 	// divisor results in roughly 4.9MHz
 	// this also inits the general purpose IO
 	gz_clock_ena(GZ_CLK_5MHz,5);
+	fprintf(stderr,"Main ADC clock enabled.\n");
 
 	// enables sysfs entry for the GPIO pin
 	gpio_export(drdy_GPIO);
@@ -172,7 +133,7 @@ int main(int argc, char *argv[]) {
 	sysfs_fd = gpio_fd_open(drdy_GPIO);
 
 	// resets the AD7705 so that it expects a write to the communication register
-        printf("sending reset\n");
+        printf("Sending reset.\n");
 	writeReset(fd);
 
 	// tell the AD7705 that the next write will be to the clock register
@@ -185,11 +146,13 @@ int main(int argc, char *argv[]) {
 	// intiates a self calibration and then after that starts converting
 	writeReg(fd,0x40);
 
+        printf("Receiving data.\n");
 	// we read data in an endless loop and display it
 	// this needs to run in a thread ideally
 	while (1) {
 
 	  // let's wait for data for max one second
+	  // goes to sleep until an interrupt happens
 	  ret = gpio_poll(sysfs_fd,1000);
 	  if (ret<1) {
 	    fprintf(stderr,"Poll error %d\n",ret);
@@ -199,14 +162,8 @@ int main(int argc, char *argv[]) {
 	  writeReg(fd,0x38);
 	  // read the data register by performing two 8 bit reads
 	  int value = readData(fd)-0x8000;
-		fprintf(stderr,"data = %d       \r",value);
-
-		// if stdout is redirected to a file or pipe, output the data
-		if( no_tty )
-		{
-			printf("%d\n", value);
-			fflush(stdout);
-		}
+	  fprintf(stderr,"data = %d       \r",value);
+	  
 	}
 
 	close(fd);
