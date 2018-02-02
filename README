@@ -22,9 +22,9 @@ the data. This is done via interrupts / poll
 so that this process sleeps until new data becomes
 available.
 
-Make sure you use the new PCB layout from:
-http://web.eng.gla.ac.uk/rpi/
-which has the interrupt wired up.
+The design files are in the subdirectory "pcb".
+
+![alt tag](circuit.png)
 
 
 To build:
