@@ -1,5 +1,4 @@
-Test / demo program for the AD7705 connected to the raspberry PI!
-=================================================================
+# Hard/software how to connect the AD7705 to the raspberry PI!
 
 The AD7705 is a two channel sigma delta converter which has
 differential inputs, a PGA and programmable data rates. It's
@@ -16,7 +15,7 @@ triggers a calibration of the AD,
 reads data from channel 1 and 
 prints it on the screen.
 
-This program uses DRDY connected to Port 22 and
+It uses DRDY connected to Port 22 and
 waits for a falling edge on this port to read
 the data. This is done via interrupts / poll
 so that this process sleeps until new data becomes
@@ -42,4 +41,3 @@ http://web.eng.gla.ac.uk/rpi/
 Bernd Porr
 mail@berndporr.me.uk
 www.berndporr.me.uk
-
