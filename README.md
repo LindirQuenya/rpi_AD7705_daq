@@ -1,4 +1,4 @@
-# Hard/software how to connect the AD7705 to the raspberry PI!
+# Data acquisition with the AD7705 on the raspberry PI!
 
 The AD7705 is a two channel sigma delta converter which has
 differential inputs, a PGA and programmable data rates. It's
