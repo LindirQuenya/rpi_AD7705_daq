@@ -25,10 +25,17 @@ The design files are in the subdirectory "pcb".
 
 ![alt tag](circuit.png)
 
+## Prerequisites
+
+Install the bcm2835 library: http://www.airspayce.com/mikem/bcm2835/
+
+## Building
 
 To build:
 
     make
+
+## Running
 
 Run it with the command:
 
