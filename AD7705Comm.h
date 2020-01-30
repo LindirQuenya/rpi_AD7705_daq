@@ -2,11 +2,11 @@
 #define __AD7705COMM_H
 
 /*
- * AD7705 class to read data from this Sigma Delta ADC
+ * AD7705 class to read data at 50Hz sampling rate
  *
  * Copyright (c) 2007  MontaVista Software, Inc.
  * Copyright (c) 2007  Anton Vorontsov <avorontsov@ru.mvista.com>
- * Copyright (c) 2013-2019  Bernd Porr <mail@berndporr.me.uk>
+ * Copyright (c) 2013-2020  Bernd Porr <mail@berndporr.me.uk>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
