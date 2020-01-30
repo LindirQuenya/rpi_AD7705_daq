@@ -33,6 +33,8 @@ Install the bcm2835 library: http://www.airspayce.com/mikem/bcm2835/
 
 To build:
 
+    cmake .
+
     make
 
 ## Running
