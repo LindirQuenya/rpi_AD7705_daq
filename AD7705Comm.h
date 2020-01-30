@@ -44,7 +44,6 @@ public:
 /**
  * This class reads data from the AD7705 in the background (separate
  * thread) and calls a callback function whenever data is available.
- * Sampling rate is 50Hz.
  **/
 class AD7705Comm {
 
@@ -64,12 +63,21 @@ public:
 	 * Starts the data acquisition in the background and the
 	 * callback is called with new samples
 	 **/
-	void start();
+	void start(int samplingRate = SAMPLING_RATE_50HZ);
 
 	/**
 	 * Stops the data acquistion
 	 **/
 	void stop();
+
+	/**
+	 * Sampling rates
+	 **/
+	static const int SAMPLING_RATE_50HZ = 0;
+	static const int SAMPLING_RATE_60HZ = 1;
+	static const int SAMPLING_RATE_250HZ = 2;
+	static const int SAMPLING_RATE_500HZ = 3;
+
 
 private:
 	const uint8_t mode = SPI_CPHA | SPI_CPOL;

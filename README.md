@@ -25,7 +25,7 @@ The design files (for EAGLE) are in the subdirectory "pcb".
 
 Install the bcm2835 library: http://www.airspayce.com/mikem/bcm2835/
 
-## Building
+## Building the demo / test:
 
 To build:
 
@@ -38,6 +38,39 @@ To build:
 Run it with the command:
 
     sudo ./ad7705_test
+
+## General usage
+
+### Callback handler
+
+```
+class AD7705printSampleCallback : public AD7705callback {
+	virtual void hasSample(int v) {
+		// process your sample here
+		printf("v = %d\n",v);
+	}
+};
+```
+
+### Main program
+
+Instantiate the AD7705 class and the callback handler:
+```
+	AD7705Comm ad7705comm;
+	AD7705printSampleCallback ad7705printSampleCallback;
+	ad7705comm.setCallback(&ad7705printSampleCallback);
+```
+
+Start the data acquisition:
+```
+	ad7705comm.start(AD7705Comm::SAMPLING_RATE_50HZ);
+```
+once `start` has been called the data will be arriving.
+
+Stop the data acquisition:
+```
+	ad7705comm.stop();
+```
 
 
 Associated website:

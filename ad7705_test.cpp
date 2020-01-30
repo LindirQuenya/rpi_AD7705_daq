@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
 	AD7705Comm ad7705comm;
 	AD7705printSampleCallback ad7705printSampleCallback;
 	ad7705comm.setCallback(&ad7705printSampleCallback);
-	ad7705comm.start();
+	ad7705comm.start(AD7705Comm::SAMPLING_RATE_50HZ);
 	getchar();
 	ad7705comm.stop();
 	return 0;

@@ -117,9 +117,12 @@ void AD7705Comm::run(AD7705Comm* ad7705comm) {
 }
 
 
-void AD7705Comm::start() {
+void AD7705Comm::start(int samplingRate) {
 	if (daqThread) {
-		throw "Called while DAQ is running.";
+		throw "Called while DAQ is already running.";
+	}
+	if (samplingRate & (~0x3)) {
+		throw "Invalid sampling rate requested.";
 	}
 	// resets the AD7705 so that it expects a write to the communication register
 	fprintf(stderr,"Sending reset.\n");
@@ -127,8 +130,8 @@ void AD7705Comm::start() {
 	
 	// tell the AD7705 that the next write will be to the clock register
 	writeReg(fd,0x20);
-	// write 00001100 : CLOCKDIV=1,CLK=1,expects 4.9152MHz input clock, sampling rate 50Hz
-	writeReg(fd,0x0C);
+	// write 00001100 : CLOCKDIV=1,CLK=1,expects 4.9152MHz input clock, sampling rate
+	writeReg(fd,0x0C | samplingRate);
 	
 	// tell the AD7705 that the next write will be the setup register
 	writeReg(fd,0x10);
