@@ -1,5 +1,5 @@
 This work is licensed under a Creative Commons Attribution-NonCommercial 3.0 Unported License.
-(C) 2013-2014 BERND PORR, www.berndporr.me.uk
+(C) 2013-2020 BERND PORR, www.berndporr.me.uk
 
 This is an extension board which adds two analogue inputs to the Raspberry PI.
 Three GPIO pins are also forwarded to another pin header with additional
@@ -10,5 +10,3 @@ inputs, buffers and a PGA. It's especially designed to measure small voltages,
 for example from a pressure gauge or a thermocpuple.
 
 The maximum sampling rate is 500Hz.
-
-Board size: 39.37 x 51.44mm
