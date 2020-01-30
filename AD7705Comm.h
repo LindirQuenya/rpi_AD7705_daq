@@ -44,6 +44,7 @@ public:
 /**
  * This class reads data from the AD7705 in the background (separate
  * thread) and calls a callback function whenever data is available.
+ * Sampling rate is 50Hz.
  **/
 class AD7705Comm {
 

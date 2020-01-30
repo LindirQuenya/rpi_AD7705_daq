@@ -127,7 +127,7 @@ void AD7705Comm::start() {
 	
 	// tell the AD7705 that the next write will be to the clock register
 	writeReg(fd,0x20);
-	// write 00001100 : CLOCKDIV=1,CLK=1,expects 4.9152MHz input clock
+	// write 00001100 : CLOCKDIV=1,CLK=1,expects 4.9152MHz input clock, sampling rate 50Hz
 	writeReg(fd,0x0C);
 	
 	// tell the AD7705 that the next write will be the setup register
