@@ -21,10 +21,6 @@ The design files (for EAGLE) are in the subdirectory "pcb".
 
 ![alt tag](circuit.png)
 
-## Prerequisites
-
-Install the bcm2835 library: http://www.airspayce.com/mikem/bcm2835/
-
 ## Building the demo / test:
 
 To build:
