@@ -10195,68 +10195,6 @@ Source: http://products.nichicon.co.jp/en/pdf/XJA043/e-ud.pdf</description>
 </deviceset>
 </devicesets>
 </library>
-<library name="jumper">
-<packages>
-<package name="JP1">
-<description>&lt;b&gt;JUMPER&lt;/b&gt;</description>
-<wire x1="-1.016" y1="0" x2="-1.27" y2="0.254" width="0.1524" layer="21"/>
-<wire x1="-1.016" y1="0" x2="-1.27" y2="-0.254" width="0.1524" layer="21"/>
-<wire x1="1.016" y1="0" x2="1.27" y2="0.254" width="0.1524" layer="21"/>
-<wire x1="1.016" y1="0" x2="1.27" y2="-0.254" width="0.1524" layer="21"/>
-<wire x1="1.27" y1="-0.254" x2="1.27" y2="-2.286" width="0.1524" layer="21"/>
-<wire x1="1.016" y1="-2.54" x2="1.27" y2="-2.286" width="0.1524" layer="21"/>
-<wire x1="1.27" y1="2.286" x2="1.016" y2="2.54" width="0.1524" layer="21"/>
-<wire x1="1.27" y1="2.286" x2="1.27" y2="0.254" width="0.1524" layer="21"/>
-<wire x1="1.016" y1="2.54" x2="-1.016" y2="2.54" width="0.1524" layer="21"/>
-<wire x1="-1.27" y1="2.286" x2="-1.016" y2="2.54" width="0.1524" layer="21"/>
-<wire x1="-1.27" y1="2.286" x2="-1.27" y2="0.254" width="0.1524" layer="21"/>
-<wire x1="-1.27" y1="-0.254" x2="-1.27" y2="-2.286" width="0.1524" layer="21"/>
-<wire x1="-1.016" y1="-2.54" x2="-1.27" y2="-2.286" width="0.1524" layer="21"/>
-<wire x1="-1.016" y1="-2.54" x2="1.016" y2="-2.54" width="0.1524" layer="21"/>
-<pad name="1" x="0" y="-1.27" drill="0.9144" shape="long"/>
-<pad name="2" x="0" y="1.27" drill="0.9144" shape="long"/>
-<text x="-1.651" y="-2.54" size="1.27" layer="25" ratio="10" rot="R90">&gt;NAME</text>
-<text x="2.921" y="-2.54" size="1.27" layer="27" ratio="10" rot="R90">&gt;VALUE</text>
-<rectangle x1="-0.3048" y1="0.9652" x2="0.3048" y2="1.5748" layer="51"/>
-<rectangle x1="-0.3048" y1="-1.5748" x2="0.3048" y2="-0.9652" layer="51"/>
-</package>
-</packages>
-<symbols>
-<symbol name="JP2E">
-<wire x1="0" y1="0" x2="0" y2="1.27" width="0.1524" layer="94"/>
-<wire x1="0" y1="2.54" x2="0" y2="1.27" width="0.4064" layer="94"/>
-<wire x1="2.54" y1="0" x2="2.54" y2="1.27" width="0.1524" layer="94"/>
-<wire x1="2.54" y1="2.54" x2="2.54" y2="1.27" width="0.4064" layer="94"/>
-<wire x1="-0.635" y1="0" x2="3.175" y2="0" width="0.4064" layer="94"/>
-<wire x1="3.175" y1="0" x2="3.175" y2="0.635" width="0.4064" layer="94"/>
-<wire x1="3.175" y1="0.635" x2="-0.635" y2="0.635" width="0.4064" layer="94"/>
-<wire x1="-0.635" y1="0.635" x2="-0.635" y2="0" width="0.4064" layer="94"/>
-<text x="-1.27" y="0" size="1.778" layer="95" rot="R90">&gt;NAME</text>
-<text x="5.715" y="0" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
-<pin name="1" x="0" y="-2.54" visible="pad" length="short" direction="pas" rot="R90"/>
-<pin name="2" x="2.54" y="-2.54" visible="pad" length="short" direction="pas" rot="R90"/>
-</symbol>
-</symbols>
-<devicesets>
-<deviceset name="JP1E" prefix="JP" uservalue="yes">
-<description>&lt;b&gt;JUMPER&lt;/b&gt;</description>
-<gates>
-<gate name="A" symbol="JP2E" x="2.54" y="0"/>
-</gates>
-<devices>
-<device name="" package="JP1">
-<connects>
-<connect gate="A" pin="1" pad="1"/>
-<connect gate="A" pin="2" pad="2"/>
-</connects>
-<technologies>
-<technology name=""/>
-</technologies>
-</device>
-</devices>
-</deviceset>
-</devicesets>
-</library>
 <library name="crystal">
 <description>&lt;b&gt;Crystals and Crystal Resonators&lt;/b&gt;&lt;p&gt;
 &lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
@@ -10397,8 +10335,6 @@ Source: http://www.abracon.com/Oscillators/asf1-L-L1.pdf</description>
 <part name="SV4" library="con-lstb" deviceset="MA04-1" device="" value="GPIO"/>
 <part name="GND8" library="supply1" deviceset="GND" device=""/>
 <part name="C3" library="rcl" deviceset="CPOL-EU" device="TT2D7" value="1uF/tantalum"/>
-<part name="SV6" library="jumper" deviceset="JP1E" device="" value="3.3V"/>
-<part name="+3V5" library="supply1" deviceset="+3V3" device=""/>
 <part name="C1" library="rcl" deviceset="CPOL-EU" device="TT2D7" value="1uF/tantalum"/>
 <part name="SV2" library="con-lstb" deviceset="MA04-1" device=""/>
 <part name="SV3" library="con-lstb" deviceset="MA04-1" device=""/>
@@ -10408,7 +10344,6 @@ Source: http://www.abracon.com/Oscillators/asf1-L-L1.pdf</description>
 <part name="C4" library="capacitor-wima" deviceset="C" device="5/2.5" value="0.1uF"/>
 <part name="SV5" library="con-lsta" deviceset="FE20-2" device=""/>
 <part name="+3V7" library="supply1" deviceset="+3V3" device=""/>
-<part name="GND10" library="supply1" deviceset="GND" device=""/>
 <part name="GND11" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
@@ -10448,8 +10383,6 @@ Source: http://www.abracon.com/Oscillators/asf1-L-L1.pdf</description>
 <instance part="SV4" gate="1" x="104.14" y="22.86" rot="R90"/>
 <instance part="GND8" gate="1" x="91.44" y="20.32"/>
 <instance part="C3" gate="G$1" x="68.58" y="86.36"/>
-<instance part="SV6" gate="A" x="-33.02" y="68.58" rot="R90"/>
-<instance part="+3V5" gate="G$1" x="-22.86" y="78.74"/>
 <instance part="C1" gate="G$1" x="66.04" y="30.48"/>
 <instance part="SV2" gate="1" x="-35.56" y="38.1"/>
 <instance part="SV3" gate="1" x="-35.56" y="20.32"/>
@@ -10459,7 +10392,6 @@ Source: http://www.abracon.com/Oscillators/asf1-L-L1.pdf</description>
 <instance part="C4" gate="G$1" x="-17.78" y="86.36" rot="R180"/>
 <instance part="SV5" gate="G$1" x="129.54" y="73.66" rot="MR90"/>
 <instance part="+3V7" gate="G$1" x="-22.86" y="58.42"/>
-<instance part="GND10" gate="1" x="-22.86" y="66.04"/>
 <instance part="GND11" gate="1" x="152.4" y="63.5"/>
 </instances>
 <busses>
@@ -10523,11 +10455,6 @@ Source: http://www.abracon.com/Oscillators/asf1-L-L1.pdf</description>
 <junction x="-17.78" y="83.82"/>
 </segment>
 <segment>
-<wire x1="-30.48" y1="68.58" x2="-22.86" y2="68.58" width="0.1524" layer="91"/>
-<pinref part="SV6" gate="A" pin="1"/>
-<pinref part="GND10" gate="1" pin="GND"/>
-</segment>
-<segment>
 <pinref part="SV5" gate="G$1" pin="39"/>
 <pinref part="GND11" gate="1" pin="GND"/>
 </segment>
@@ -10561,12 +10488,6 @@ Source: http://www.abracon.com/Oscillators/asf1-L-L1.pdf</description>
 <pinref part="U$1" gate="G$1" pin="VDD"/>
 <pinref part="C2" gate="G$1" pin="2"/>
 <pinref part="C3" gate="G$1" pin="+"/>
-</segment>
-<segment>
-<wire x1="-22.86" y1="76.2" x2="-22.86" y2="71.12" width="0.1524" layer="91"/>
-<wire x1="-22.86" y1="71.12" x2="-30.48" y2="71.12" width="0.1524" layer="91"/>
-<pinref part="+3V5" gate="G$1" pin="+3V3"/>
-<pinref part="SV6" gate="A" pin="2"/>
 </segment>
 <segment>
 <pinref part="Q1" gate="G$1" pin="OE"/>
