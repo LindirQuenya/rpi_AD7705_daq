@@ -36,12 +36,11 @@ class AD7705printSampleCallback : public AD7705callback {
 // Prints data till the user presses a key.
 int main(int argc, char *argv[]) {
 	AD7705Comm* ad7705comm = new AD7705Comm();
-	AD7705printSampleCallback* ad7705printSampleCallback = new AD7705printSampleCallback();
-	ad7705comm->setCallback(ad7705printSampleCallback);
+	AD7705printSampleCallback ad7705printSampleCallback;
+	ad7705comm->setCallback(&ad7705printSampleCallback);
 	ad7705comm->start(AD7705Comm::SAMPLING_RATE_50HZ);
 	getchar();
 	ad7705comm->stop();
 	delete ad7705comm;
-	delete ad7705printSampleCallback;
 	return 0;
 }
