@@ -14,12 +14,6 @@ AD7705Comm::AD7705Comm(const char* spiDevice) {
 		fprintf(stderr,"SPI mode %d set (ret=%d).\n",mode,ret);
 	}
 	
-	// enable master clock for the AD
-	// divisor results in roughly 4.9MHz
-	// this also inits the general purpose IO
-	gz_clock_ena(GZ_CLK_5MHz,5);
-	fprintf(stderr,"Main ADC clock enabled.\n");
-	
 	// enables sysfs entry for the GPIO pin
 	gpio_export(drdy_GPIO);
 	// set to input
@@ -130,8 +124,8 @@ void AD7705Comm::start(int samplingRate) {
 	
 	// tell the AD7705 that the next write will be to the clock register
 	writeReg(fd,0x20);
-	// write 00001100 : CLOCKDIV=1,CLK=1,expects 4.9152MHz input clock, sampling rate
-	writeReg(fd,0x0C | samplingRate);
+	// write 00000100 : CLOCKDIV=0,CLK=1,expects 4.9152MHz input clock, sampling rate
+	writeReg(fd,0x04 | samplingRate);
 	
 	// tell the AD7705 that the next write will be the setup register
 	writeReg(fd,0x10);

@@ -24,7 +24,6 @@
 #include <linux/spi/spidev.h>
 #include <thread>  
 
-#include "gz_clk.h"
 #include "gpio-sysfs.h"
 
 
