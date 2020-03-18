@@ -24,7 +24,7 @@
 #include <netinet/in.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-
+#include <sys/signal.h>
 
 
 #include "AD7705Comm.h"
@@ -54,7 +54,7 @@ public:
 	
 	virtual void hasSample(int v) {
 		char buffer[256];
-		printf("v = %d\n",v);
+		//printf("v = %d\n",v);
 		sprintf(buffer,"%d\n",v);
 		sendto(udpSocket,buffer,strlen(buffer)+1,0,
 		       (const struct sockaddr *) &clientAddr,  
@@ -65,16 +65,47 @@ public:
 	}
 };
 
+
+// Below that would be a separate thread in a class
+// if part of a larger userspace program.
+// Here, it's just running as a background process
+// it is just a main program with a
+// global variable "running" which is set to zero by
+// the signal handler.
+
+int running = 1;
+
+void sigHandler(int sig) { 
+    if(sig == SIGHUP) {
+	    running = 0;
+    }
+}
+
+// sets a signal handler so that you can kill
+// the background process gracefully with:
+// kill -HUP <PID>
+void setHandler() {
+	struct sigaction act;
+	memset (&act, 0, sizeof (act));
+	act.sa_handler = sigHandler;
+	if (sigaction (SIGHUP, &act, NULL) < 0) {
+		perror ("sigaction");
+		exit (-1);
+	}
+}
+
 // Creates an instance of the AD7705 class.
 // Registers the callback.
-// Prints data till the user presses a key.
+// In a real program that would be a thread!
 int main(int argc, char *argv[]) {
 	AD7705Comm* ad7705comm = new AD7705Comm();
 	AD7705UDP ad7705printSampleCallback;
 	ad7705comm->setCallback(&ad7705printSampleCallback);
 	ad7705comm->start(AD7705Comm::SAMPLING_RATE_50HZ);
-	getchar();
+	setHandler();
+	while (running) sleep(1);
 	ad7705comm->stop();
 	delete ad7705comm;
+	fprintf(stderr,"\nUDP transmit has terminated.\n");
 	return 0;
 }

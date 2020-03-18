@@ -48,7 +48,7 @@ class AD7705printSampleCallback : public AD7705callback {
 };
 ```
 
-### Main program
+### Example program
 
 Instantiate the AD7705 class and the callback handler:
 ```
@@ -66,6 +66,24 @@ once `start` has been called the data will be arriving.
 Stop the data acquisition:
 ```
 	ad7705comm.stop();
+```
+
+### UDP transmitter
+
+The program `udp_transmit` sends the raw ADC values as ASCII strings
+with a carriage retun at the end to port 65000. This program can
+run in the background. Start it with:
+
+```
+./udp_transmit &
+```
+to run in the background.
+
+To stop it when running in the background look up its process ID with
+`ps ax` and then send HUP with the kill command:
+
+```
+kill -HUP <pid>
 ```
 
 
