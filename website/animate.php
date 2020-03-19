@@ -50,7 +50,7 @@
 	$temperature = $temperature / $navg;
 	socket_close($sock);
 
-	echo "<p>Current temperature in Bernd's house: ".$temperature." &#8451;</p>";
+	echo "<p>Current temperature in Bernd's house: <span id=\"temperature\">".$temperature."</span> &#8451;</p>";
 
 	$output = fopen("data.txt",'a') or die("Can't save");
 	$p = array(round(microtime(true)*1000),$temperature);
@@ -71,7 +71,6 @@
 	      var g = new Dygraph(document.getElementById("div_g"), data,
 				  {
 				      drawPoints: true,
-				      valueRange: [0.0, 100],
 				      labels: ['Time', 'Temperature'],
 				  });
 	      window.intervalId = setInterval(function() {
@@ -83,6 +82,7 @@
 		      d.setUTCSeconds(utcSeconds);
 		      var x = d;
 		      var y = result.data;
+                      document.getElementById("temperature").innerHTML = Math.round(result.data*100)/100;
 		      if (data.length > maxSamples) {
 			  data.shift();
 		      }
