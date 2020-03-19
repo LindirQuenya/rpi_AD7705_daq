@@ -49,7 +49,7 @@
 	echo "<p>Current temperature in Bernd's house: ".$temperature." &#8451;</p>";
 
 	$output = fopen("data.txt",'a') or die("Can't save");
-	$p = array(time()*1000,$temperature);
+	$p = array(round(microtime(true)*1000),$temperature);
 	fputcsv($output, $p);
 	fclose($output) or die("Can't close");
 
