@@ -9,12 +9,16 @@
              font-family: Tahoma, Verdana, Arial, sans-serif;
 	 }
 	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.js"></script>
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.css" />
     </head>
     <body>
-	<h1>Welcome to Realtime Embedded</h1>
+	<h2>Realtime data plot with JSON data transfer</h2>
 
+	<p>This is a realtime demo where the java script requests the data
+	  as JSON from the server and then appends it to the plot every second.</p>
+	
 	<?php
 	// PHP code
 	//Create a UDP socket
@@ -55,29 +59,48 @@
 
 	?>
 
-	<div id="graphdiv"></div>
-	<script type="text/javascript">
-	 g = new Dygraph(
-	     document.getElementById("graphdiv"),
-	     "data.txt",
-             {
-                 legend:'always',
-                 ticker: Dygraph.dateTicker
-             }
-	 );
-	</script>
 
+
+	<div id="div_g" style="width:600px; height:300px;"></div>
+	
+	<script type="text/javascript">
+	  var maxSamples = 60;
+	  // callback when the Web page has been loaded
+	  $(document).ready(function() {
+	      var data = [];
+	      var g = new Dygraph(document.getElementById("div_g"), data,
+				  {
+				      drawPoints: true,
+				      valueRange: [0.0, 100],
+				      labels: ['Time', 'Temperature'],
+				  });
+	      window.intervalId = setInterval(function() {
+		  // callback for interval timer for every second
+		  $.getJSON("json.php",function(result){
+		      // callback after the php script has been called
+		      var utcSeconds = result.epoch;
+		      var d = new Date(0);
+		      d.setUTCSeconds(utcSeconds);
+		      var x = d;
+		      var y = result.data;
+		      if (data.length > maxSamples) {
+			  data.shift();
+		      }
+		      data.push([x, y]);
+		      g.updateOptions( { 'file': data } );
+		  });
+	      }, 1000);
+	  });
+	</script>
+	
+	
+	<br />
+	<br />
 <br />
 <br />
 <br />
 <br />
-<br />
-<br />
-<br />
-<br />
-<p><a href="animate.php">Try out the realtime animation</a></p>
-<br />
-<br />
+<p><a href="/">Main page</a></p>
 <br />
 <br />
 <br />
