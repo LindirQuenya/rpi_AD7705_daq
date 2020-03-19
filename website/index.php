@@ -49,7 +49,7 @@
 	echo "<p>Current temperature in Bernd's house: ".$temperature." &#8451;</p>";
 
 	$output = fopen("data.txt",'a') or die("Can't save");
-	$p = array(time(),$temperature);
+	$p = array(time()*1000,$temperature);
 	fputcsv($output, $p);
 	fclose($output) or die("Can't close");
 
@@ -78,8 +78,21 @@
 <br />
 <br />
 
+<h2>References</h2>
+
 <p><a href="http://dygraphs.com/">dygraphs</p>
 
+<p><a href="https://github.com/berndporr/rpi_AD7705_daq">github repo</a></p>
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 <br />
 
 <p><a href="textonly.php">Text only version</a></p>
