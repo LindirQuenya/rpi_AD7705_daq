@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<meta http-equiv="refresh" content="60">
 <html>
     <head>
 	<title>Welcome to the Realtime Embedded Test server</title>
@@ -27,32 +28,28 @@
 	}
 
 	// Bind the source address
-	if( !socket_bind($sock, "127.0.0.1" , 65000) )
+	if( socket_bind($sock, "127.0.0.1" , 65000) )
 	{
-            $errorcode = socket_last_error();
-            $errormsg = socket_strerror($errorcode);
-
-            die("Could not bind socket : [$errorcode] $errormsg \n");
+	    // success!
+	    $temperature = 0;
+	    $navg = 10;
+	    echo "<h2>LM35 temperature sensor connected to the PI</h2>";
+	    for ($x = 0; $x <= $navg; $x++) {
+		//Receive some data
+		$r = socket_recvfrom($sock, $buf, 512, 0, $remote_ip, $remote_port);
+		$temperature = $temperature + (float)$buf / 65536 * 2.5 * 0.6 * 100;
+	    }
+	    $temperature = $temperature / $navg;
+	    socket_close($sock);
+	    
+	    echo "<p>Current temperature in Bernd's house: ".$temperature." &#8451;</p>";
+	    
+	    $output = fopen("data.txt",'a') or die("Can't save");
+	    $p = array(round(microtime(true)*1000),$temperature);
+	    fputcsv($output, $p);
+	    fclose($output) or die("Can't close");
 	}
-
-	$temperature = 0;
-	$navg = 10;
-	echo "<h2>LM35 temperature sensor connected to the PI</h2>";
-	for ($x = 0; $x <= $navg; $x++) {
-            //Receive some data
-            $r = socket_recvfrom($sock, $buf, 512, 0, $remote_ip, $remote_port);
-            $temperature = $temperature + (float)$buf / 65536 * 2.5 * 0.6 * 100;
-	}
-	$temperature = $temperature / $navg;
-	socket_close($sock);
-
-	echo "<p>Current temperature in Bernd's house: ".$temperature." &#8451;</p>";
-
-	$output = fopen("data.txt",'a') or die("Can't save");
-	$p = array(round(microtime(true)*1000),$temperature);
-	fputcsv($output, $p);
-	fclose($output) or die("Can't close");
-
+	
 	?>
 
 	<div id="graphdiv"></div>
