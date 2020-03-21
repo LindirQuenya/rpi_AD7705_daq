@@ -86,14 +86,17 @@ To stop it when running in the background look up its process ID with
 kill -HUP <pid>
 ```
 
-### Websites plotting the data
+### UDP test receiver
+
+For debugging purposes there is a python script which prints
+the UDP packets on the screen: `UDP_receive.py`.
+
+### Website which plots the UDP data
 
 In the subdirectory `website` are examples how to plot the data. Copy these
-files in the root directory of a webserver. For nginx this is `/var/www/html`.
-
-## Associated website:
-http://web.eng.gla.ac.uk/rpi/
-
+files in the web-server directory `/var/www/html` of your PI. The preferred
+web server is nginx. Please install it with the package manager
+together with PHP.
 
 ## Author: Bernd Porr
 
