@@ -86,10 +86,17 @@ To stop it when running in the background look up its process ID with
 kill -HUP <pid>
 ```
 
+### Websites plotting the data
 
-Associated website:
+In the subdirectory `website` are examples how to plot the data. Copy these
+files in the root directory of a webserver. For nginx this is `/var/www/html`.
+
+## Associated website:
 http://web.eng.gla.ac.uk/rpi/
 
-Bernd Porr
+
+## Author: Bernd Porr
+
+bernd.porr@glasgow.ac.uk
 mail@berndporr.me.uk
 www.berndporr.me.uk
