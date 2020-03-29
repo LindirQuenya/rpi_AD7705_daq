@@ -95,7 +95,8 @@ the UDP packets on the screen: `UDP_receive.py`.
 
 ![alt tag](website/screenshot.png)
 
-In the subdirectory `website` are examples how to plot the data. Copy these
+In the subdirectory `website` are examples how to plot the data (simple database
+in a file and JSON packaging for realtime javascript animations). Copy these
 files in the web-server directory `/var/www/html` of your PI. The preferred
 web server is nginx. Please install it with the package manager
 also the package `PHP`. Enable PHP for nginx.
