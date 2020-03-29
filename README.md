@@ -93,10 +93,12 @@ the UDP packets on the screen: `UDP_receive.py`.
 
 ### Website which plots the UDP data
 
+![alt tag](website/screenshot.png)
+
 In the subdirectory `website` are examples how to plot the data. Copy these
 files in the web-server directory `/var/www/html` of your PI. The preferred
 web server is nginx. Please install it with the package manager
-together with PHP.
+also the package `PHP`. Enable PHP for nginx.
 
 ## Author: Bernd Porr
 
