@@ -82,13 +82,18 @@ int main(int argc, char *argv[]) {
 	int sock_fd;
 	FCGX_Init();
 	memset(&request, 0, sizeof(FCGX_Request));
-	sock_fd = FCGX_OpenSocket(":65000", 1024);
+	sock_fd = FCGX_OpenSocket(":65001", 1024);
 	FCGX_InitRequest(&request, sock_fd, 0);
+	fprintf(stderr,"Listening to CGI requests.\n");
 	while (running && (FCGX_Accept_r(&request) == 0)) {
 		char buffer[256];
-		sprintf(buffer,"%d\n",ad7705fastcgi.currentSample);
+		sprintf(buffer,
+			"Content-type: text/html\r\n"
+			"\r\n"
+			"%d\n",ad7705fastcgi.currentSample);
 		FCGX_FPrintF(request.out, "%s", buffer);
 		FCGX_Finish_r(&request);
+		fprintf(stderr,"Sent CGI requests.\n");
 	}
 	ad7705comm->stop();
 	delete ad7705comm;
