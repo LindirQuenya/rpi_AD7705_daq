@@ -9,22 +9,23 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License.
  *
- * Cross-compile with cross-gcc -I/path/to/cross-kernel/include
  */
 
 #include "AD7705Comm.h"
 #include "FastCGI.h"
 
 
-// Below that would be a separate thread in a class
-// if part of a larger userspace program.
-// Here, it's just running as a background process
-// it is just a main program with a
-// global variable "running" which is set to zero by
-// the signal handler.
 
+/**
+ * Flag to indicate that we are running.
+ * Needed later to quit the idle loop.
+ **/
 int mainRunning = 1;
 
+/**
+ * Handler when the user has pressed ctrl-C
+ * send HUP via the kill command.
+ **/
 void sigHandler(int sig) { 
 	if((sig == SIGHUP) || (sig == SIGINT)) {
 		mainRunning = 0;
@@ -32,9 +33,11 @@ void sigHandler(int sig) {
 }
 
 
-// sets a signal handler so that you can kill
-// the background process gracefully with:
-// kill -HUP <PID>
+/** 
+ * Sets a signal handler so that you can kill
+ * the background process gracefully with:
+ * kill -HUP <PID>
+ **/
 void setHUPHandler() {
 	struct sigaction act;
 	memset (&act, 0, sizeof (act));
@@ -50,14 +53,24 @@ void setHUPHandler() {
 }
 
 
-// Handler which receives the data, prints it on the
-// screen and sends it out.
+/**
+ * Handler which receives the data here just saves
+ * the most recent sample with timestamp. Obviously,
+ * in a real application the data would be stored
+ * in a database and/or triggers events and other things!
+ **/
 class AD7705fastcgicallback : public AD7705callback {
 public:
 	float currentTemperature;
 	long t;
 
-	// callback
+	/**
+	 * Callback with the fresh ADC data.
+	 * That's where all the internal processing
+	 * of the data is happening. Here, we just
+	 * convert the raw ADC data to temperature
+	 * and store it in a variable.
+	 **/
 	virtual void hasSample(int v) {
 		// crude conversion to temperature
 		currentTemperature = (float)v / 65536 * 2.5 * 0.6 * 100;
@@ -67,16 +80,36 @@ public:
 };
 
 
-// returns data to the nginx server
+/**
+ * Callback handler which returns data to the
+ * nginx server. Here, simply the current temperature
+ * and the timestamp is transmitted to nginx and the
+ * javascript application.
+ **/
 class FastCGIADCCallback : public FastCGIHandler::FastCGICallback {
 private:
+	/**
+	 * Pointer to the ADC event handler because it keeps
+	 * the data in this case. In a proper application
+	 * that would be probably a database class or a
+	 * controller keeping it all together.
+	 **/
 	AD7705fastcgicallback* ad7705fastcgi;
 
 public:
+	/**
+	 * Constructor: argument is the ADC callback handler
+	 * which keeps the data as a simple example.
+	 **/
 	FastCGIADCCallback(AD7705fastcgicallback* argAD7705fastcgi) {
 		ad7705fastcgi = argAD7705fastcgi;
 	}
 
+	/**
+	 * Gets the data sends it to the webserver.
+	 * The callback creates two json entries. One with the
+	 * timestamp and one with the temperature from the sensor.
+	 **/
 	virtual std::string getDataString() {
 		FastCGIHandler::JSONGenerator jsonGenerator;
 		jsonGenerator.add("epoch",(long)time(NULL));
@@ -86,26 +119,26 @@ public:
 };
 
 
-// Creates an instance of the AD7705 class.
-// Registers the callback.
-// In a real program that would be a thread!
+// Main program
 int main(int argc, char *argv[]) {
-	// getting all the ADC related acquistion going
+	// getting all the ADC related acquistion set up
 	AD7705Comm* ad7705comm = new AD7705Comm();
 	AD7705fastcgicallback ad7705fastcgicallback;
 	ad7705comm->setCallback(&ad7705fastcgicallback);
 
-	// getting the FastCGI stuff going
+	// Setting up the FastCGI communication
 	// The callback which is called when fastCGI needs data
 	// gets a pointer to the AD7705 callback class which
-	// contains the samples
+	// contains the samples. Remember this is just a simple
+	// example to have access to some data.
 	FastCGIADCCallback fastCGIADCCallback(&ad7705fastcgicallback);
 	
-	// starting the fastCGI handler
+	// starting the fastCGI handler with the callback and the
+	// socket for nginx.
 	FastCGIHandler* fastCGIHandler = new FastCGIHandler(&fastCGIADCCallback,
 							    "/tmp/adc7705socket");
 
-	// starting the data acquisition
+	// starting the data acquisition at the given sampling rate
 	ad7705comm->start(AD7705Comm::SAMPLING_RATE_50HZ);
 
 	// catching Ctrl-C or kill -HUP so that we can terminate properly
@@ -113,13 +146,14 @@ int main(int argc, char *argv[]) {
 
 	fprintf(stderr,"'%s' up and running.\n",argv[0]);
 
-	// just do nothing here and sleep. It's all dealt with in threads!
+	// Just do nothing here and sleep. It's all dealt with in threads!
+	// At this point for example a GUI could be started such as QT
+	// Here, we just wait till the user presses ctrl-c.
 	while (mainRunning) sleep(1);
 
 	fprintf(stderr,"'%s' shutting down.\n",argv[0]);
 
 	// stopping ADC
-	ad7705comm->stop();
 	delete ad7705comm;
 
 	// stops the fast CGI handlder

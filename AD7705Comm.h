@@ -2,7 +2,7 @@
 #define __AD7705COMM_H
 
 /*
- * AD7705 class to read data at 50Hz sampling rate
+ * AD7705 class to read data at a given sampling rate
  *
  * Copyright (c) 2007  MontaVista Software, Inc.
  * Copyright (c) 2007  Anton Vorontsov <avorontsov@ru.mvista.com>
@@ -52,6 +52,10 @@ public:
 	 * is /dev/spidev0.0.
 	 **/
 	AD7705Comm(const char* spiDevice = "/dev/spidev0.0");
+
+	~AD7705Comm() {
+		stop();
+	}
 
 	/**
 	 * Sets the callback which is called whenever there is a sample
