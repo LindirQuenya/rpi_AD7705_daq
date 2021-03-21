@@ -104,6 +104,7 @@ and the temperature. The class `FastCGI.h` is not just a wrapper for
 the fast-CGI method but is also able to package JSON which can then be
 read by JavaScipt in the browser.
 
+![alt tag](screenshot.png)
 
 
 ## Author: Bernd Porr
