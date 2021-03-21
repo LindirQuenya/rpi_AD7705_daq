@@ -42,7 +42,7 @@
 		      d.setUTCSeconds(utcSeconds);
 		      var x = d;
 		      var y = result.temperature;
-                      document.getElementById("temperature").innerHTML = y;
+                      document.getElementById("temperature").innerHTML = Math.round(y * 100) / 100;
 		      if (data.length > maxSamples) {
 			  data.shift();
 		      }
@@ -83,7 +83,7 @@
 <br />
 <br />
 
-<p><a href="textonly.php">Text only version</a></p>
+<p><a href="textonly.html">Text only version</a></p>
 	
     </body>
 </html>
