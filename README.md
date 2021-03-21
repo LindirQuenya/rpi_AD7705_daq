@@ -51,7 +51,7 @@ class AD7705printSampleCallback : public AD7705callback {
 };
 ```
 
-### Example program
+### Main program
 
 Instantiate the AD7705 class and the callback handler:
 ```
@@ -70,6 +70,41 @@ Stop the data acquisition:
 ```
 	ad7705comm.stop();
 ```
+
+
+## Website which shows realtime data using FastCGI
+
+FastCGI is a concept where a webserver connects to an internal
+fastcgi-server running on a certain port or socket which provides
+the realtime data. Here, the fastCGI server is our AD7705
+measurement program which continously measures the data from a
+temperature sensor.
+
+### FastCGI server
+
+Start `ad7705fastcgi`
+in the background with:
+```
+nohup ./ad7705fastcgi &
+```
+which creates a fastcgi server on port 65001.
+
+### Configuring the nginx for FastCGI
+
+ 1. copy the the nginx config file `website/nginx-sites-enabled-default` to your
+    nginx config directory `/etc/nginx/sites-enabled/default`.
+ 2. copy `website/index.html` to `/var/www/html`.
+ 
+Then point your web-browser to your raspberry pi. You should see the current
+temperatue reading on the screen.
+
+The demo transmits only a single value but that can easily turned
+into transmitting JSON packets for more complex data
+and then decoded with jquery in the brower.
+
+
+
+## UDP
 
 ### UDP transmitter
 
@@ -94,15 +129,9 @@ kill -HUP <pid>
 For debugging purposes there is a python script which prints
 the UDP packets on the screen: `UDP_receive.py`.
 
-### Website which plots the UDP data
 
-![alt tag](website/screenshot.png)
 
-In the subdirectory `website` are examples how to plot the data (simple database
-in a file and JSON packaging for realtime javascript animations). Copy these
-files in the web-server directory `/var/www/html` of your PI. The preferred
-web server is nginx. Please install it with the package manager
-also the package `PHP`. Enable PHP for nginx.
+
 
 ## Author: Bernd Porr
 

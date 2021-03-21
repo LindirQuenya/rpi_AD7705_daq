@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
 			"%d\n",ad7705fastcgi.currentSample);
 		FCGX_FPrintF(request.out, "%s", buffer);
 		FCGX_Finish_r(&request);
-		fprintf(stderr,"Sent CGI requests.\n");
+		//fprintf(stderr,"Sent CGI requests.\n");
 	}
 	ad7705comm->stop();
 	delete ad7705comm;
