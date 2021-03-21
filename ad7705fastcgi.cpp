@@ -81,7 +81,7 @@ public:
 			} else {
 				fprintf(stderr,"BUG: No handler registered.\n");
 			}
-			FCGX_FPrintF(fastCGIHandler->request.out, "%s", buffer.c_str());
+			FCGX_PutStr(buffer.c_str(), buffer.length(), fastCGIHandler->request.out);
 			FCGX_Finish_r(&(fastCGIHandler->request));
 		}
 	}
@@ -89,9 +89,8 @@ public:
 	~FastCGIHandler() {
 		running = 0;
 		shutdown(sock_fd, SHUT_RDWR);
-		close(sock_fd);
 		mainThread->join();
-		FCGX_Free(&request, 0);
+		FCGX_Free(&request, sock_fd);
 	}
 };
 
