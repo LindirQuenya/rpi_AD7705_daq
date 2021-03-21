@@ -35,11 +35,10 @@ public:
 		 **/
 		virtual std::string getDataString() = 0;
 		/**
-		 * The content type of the payload. That's by default 
-		 * "text/html" but can be overloaded to indicate, 
-		 * for example, JSON.
+		 * The content type of the payload. That's by default it's
+		 * "application/json" but can be overloaded for CSV or text.
 		 **/
-		virtual std::string getContentType() { return "text/html"; }
+		virtual std::string getContentType() { return "application/json"; }
 	};
 
 	/**
