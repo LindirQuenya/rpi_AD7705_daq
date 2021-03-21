@@ -54,11 +54,15 @@ void setHUPHandler() {
 // screen and sends it out.
 class AD7705fastcgicallback : public AD7705callback {
 public:
-	int currentSample;
+	float currentTemperature;
+	long t;
 
 	// callback
 	virtual void hasSample(int v) {
-		currentSample = v;
+		// crude conversion to temperature
+		currentTemperature = (float)v / 65536 * 2.5 * 0.6 * 100;
+		// timestamp
+		t = time(NULL);
 	}
 };
 
@@ -74,9 +78,10 @@ public:
 	}
 
 	virtual std::string getDataString() {
-		std::string data;
-		data = std::to_string(ad7705fastcgi->currentSample);
-		return data;
+		FastCGIHandler::JSONGenerator jsonGenerator;
+		jsonGenerator.add("epoch",(long)time(NULL));
+		jsonGenerator.add("temperature",ad7705fastcgi->currentTemperature);
+		return jsonGenerator.getJSON();
 	}
 };
 

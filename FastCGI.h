@@ -41,6 +41,55 @@ public:
 		 **/
 		virtual std::string getContentType() { return "text/html"; }
 	};
+
+	/**
+	 * Simple helper function to create a key/value json pairs
+	 * for the callback function.
+	 **/
+	class JSONGenerator {
+	public:
+		/**
+		 * Adds a JSON entry
+		 **/
+		void add(std::string key, std::string value) {
+			if (!firstEntry) {
+				json = json + ", ";
+			}
+			json = json + "\"" + key + "\":";
+			json = json + "\"" + value + "\"";
+			firstEntry = 0;
+		}
+
+		void add(std::string key, double value) {
+			if (!firstEntry) {
+				json = json + ", ";
+			}
+			json = json + "\"" + key + "\":";
+			json = json + std::to_string(value);
+			firstEntry = 0;
+		}
+
+		void add(std::string key, float value) {
+			add(key, (double)value);
+		}
+
+		void add(std::string key, int value) {
+			add(key, (double)value);
+		}
+
+		void add(std::string key, long value) {
+			add(key, (double)value);
+		}
+
+		/**
+		 * Gets the json
+		 **/
+		std::string getJSON() { return json + "}"; }
+		
+	private:
+		std::string json = "{";
+		int firstEntry = 1;
+	};
 	
 public:
 	/**

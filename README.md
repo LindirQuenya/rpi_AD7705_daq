@@ -97,11 +97,11 @@ the fastcgi server.
  2. copy `website/index.html` to `/var/www/html`.
  
 Then point your web-browser to your raspberry pi. You should see the current
-temperatue reading on the screen.
+temperatue reading on the screen and a plot with dygraph.
 
 The demo transmits only a single value but that can easily turned
 into transmitting JSON packets for more complex data
-and then decoded with jquery in the brower.
+and then decoded with jquery in the browser.
 
 
 
