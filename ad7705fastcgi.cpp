@@ -54,9 +54,6 @@ void setHUPHandler() {
 // screen and sends it out.
 class AD7705fastcgicallback : public AD7705callback {
 public:
-	// TODO: should be a ringbuffer. Data is arriving here
-	// continously. Just for the sake of simplicity just
-	// the most recent value is stored.
 	int currentSample;
 
 	// callback
@@ -75,7 +72,7 @@ public:
 	FastCGIADCCallback(AD7705fastcgicallback* argAD7705fastcgi) {
 		ad7705fastcgi = argAD7705fastcgi;
 	}
-	
+
 	virtual std::string getDataString() {
 		std::string data;
 		data = std::to_string(ad7705fastcgi->currentSample);
@@ -100,7 +97,8 @@ int main(int argc, char *argv[]) {
 	FastCGIADCCallback fastCGIADCCallback(&ad7705fastcgicallback);
 	
 	// starting the fastCGI handler
-	FastCGIHandler* fastCGIHandler = new FastCGIHandler(&fastCGIADCCallback);
+	FastCGIHandler* fastCGIHandler = new FastCGIHandler(&fastCGIADCCallback,
+							    "/tmp/adc7705socket");
 
 	// starting the data acquisition
 	ad7705comm->start(AD7705Comm::SAMPLING_RATE_50HZ);

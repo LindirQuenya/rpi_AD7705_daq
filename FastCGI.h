@@ -24,22 +24,34 @@
  **/
 class FastCGIHandler {
 public:
+	/**
+	 * Callback handler which needs to be implemented by the main
+	 * program.
+	 **/
 	class FastCGICallback {
 	public:
+		/**
+		 * Needs to return the payload data sent to the web browser.
+		 **/
 		virtual std::string getDataString() = 0;
+		/**
+		 * The content type of the payload. That's by default 
+		 * "text/html" but can be overloaded to indicate, 
+		 * for example, JSON.
+		 **/
+		virtual std::string getContentType() { return "text/html"; }
 	};
 	
-private:
-	FCGX_Request request;
-	int sock_fd = 0;
-	int running = 1;
-	std::thread* mainThread;
-	FastCGICallback* fastCGICallback = nullptr;
-
 public:
-	// constructor which inits it and starts the main thread
-	FastCGIHandler(FastCGICallback* argFastCGICallback = nullptr,
-		       const char socketpath[] = "/tmp/adc7705socket") {
+	/**
+	 * Constructor which inits it and starts the main thread.
+	 * Provide an instance of the callback handler which provides the
+	 * payload data in return. The optional socketpath variable
+	 * can be set to another path for the socket which talks to the
+	 * webserver.
+	 **/
+	FastCGIHandler(FastCGICallback* argFastCGICallback,
+		       const char socketpath[] = "/tmp/fastcgisocket") {
 		fastCGICallback = argFastCGICallback;
 		// set it to zero
 		memset(&request, 0, sizeof(FCGX_Request));
@@ -53,33 +65,43 @@ public:
 		FCGX_InitRequest(&request, sock_fd, 0);
 		// starting main loop
 		mainThread = new std::thread(FastCGIHandler::exec, this);
-		fprintf(stderr,"Listening to CGI requests.\n");
 	}
 
+	/**
+	 * Destructor which shuts down the connection to the webserver 
+	 * and it also terminates the thread waiting for requests.
+	 **/
+	~FastCGIHandler() {
+		running = 0;
+		shutdown(sock_fd, SHUT_RDWR);
+		mainThread->join();
+		delete mainThread;
+		FCGX_Free(&request, sock_fd);
+	}
+
+ private:
 	static void exec(FastCGIHandler* fastCGIHandler) {
 		while ((fastCGIHandler->running) && (FCGX_Accept_r(&(fastCGIHandler->request)) == 0)) {
-			// create header
-			std::string buffer =
-				"Content-type: text/html; charset=utf-8\r\n"
-				"\r\n";
-			// if the callback is not null then call it
-			if (fastCGIHandler->fastCGICallback != nullptr) {
-				buffer = buffer + fastCGIHandler->fastCGICallback->getDataString();
-				buffer = buffer + "\r\n";
-			} else {
-				fprintf(stderr,"BUG: No handler registered.\n");
-			}
+			// create the header
+			std::string buffer = "Content-type: "+fastCGIHandler->fastCGICallback->getContentType();
+			buffer = buffer + "; charset=utf-8\r\n";
+			buffer = buffer + "\r\n";
+			// append the data
+			buffer = buffer + fastCGIHandler->fastCGICallback->getDataString();
+			buffer = buffer + "\r\n";
+			// send the data to the web server
 			FCGX_PutStr(buffer.c_str(), buffer.length(), fastCGIHandler->request.out);
 			FCGX_Finish_r(&(fastCGIHandler->request));
 		}
 	}
 
-	~FastCGIHandler() {
-		running = 0;
-		shutdown(sock_fd, SHUT_RDWR);
-		mainThread->join();
-		FCGX_Free(&request, sock_fd);
-	}
+ private:
+	FCGX_Request request;
+	int sock_fd = 0;
+	int running = 1;
+	std::thread* mainThread = nullptr;
+	FastCGICallback* fastCGICallback = nullptr;
+
 };
 
 #endif
