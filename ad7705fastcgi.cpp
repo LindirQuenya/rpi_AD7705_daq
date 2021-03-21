@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
 	while (running && (FCGX_Accept_r(&request) == 0)) {
 		char buffer[256];
 		sprintf(buffer,
-			"Content-type: text/html\r\n"
+			"Content-type: text/html; charset=utf-8\r\n"
 			"\r\n"
 			"%d\n",ad7705fastcgi.currentSample);
 		FCGX_FPrintF(request.out, "%s", buffer);

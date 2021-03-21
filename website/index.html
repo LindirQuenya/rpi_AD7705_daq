@@ -12,7 +12,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
   function readyFn( jQuery ) {
-      var url = 'http://192.168.1.7/data/:80';
+      var url = '/data/:80';
       $.get(url, function(data, status) {
 	  var temperature = Math.round( data / 65536 * 2.5 * 0.6 * 1000 ) / 10;
 	  document.getElementById("temperature").innerHTML = temperature;
