@@ -20,10 +20,6 @@
 #include <sys/ioctl.h>
 #include <linux/types.h>
 #include <linux/spi/spidev.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
 #include <sys/signal.h>
 #include <iostream>
 #include "fcgio.h"
@@ -34,7 +30,12 @@
 // screen and sends it out.
 class AD7705fastcgi : public AD7705callback {
 public:
-	int currentSample; // TODO: should be a ringbuffer
+	// TODO: should be a ringbuffer. Data is arriving here
+	// continously. Just for the sake of simplicity just
+	// the most recent value is stored.
+	int currentSample;
+
+	// callback
 	virtual void hasSample(int v) {
 		currentSample = v;
 	}
@@ -79,21 +80,21 @@ int main(int argc, char *argv[]) {
 	ad7705comm->start(AD7705Comm::SAMPLING_RATE_50HZ);
 	setHandler();
 	FCGX_Request request;
-	int sock_fd;
-	FCGX_Init();
 	memset(&request, 0, sizeof(FCGX_Request));
-	sock_fd = FCGX_OpenSocket(":65001", 1024);
+	FCGX_Init();
+	int sock_fd = FCGX_OpenSocket(":65001", 1024);
 	FCGX_InitRequest(&request, sock_fd, 0);
 	fprintf(stderr,"Listening to CGI requests.\n");
 	while (running && (FCGX_Accept_r(&request) == 0)) {
 		char buffer[256];
+		// writing out a single value
+		// TODO: send JSON packets over
 		sprintf(buffer,
 			"Content-type: text/html; charset=utf-8\r\n"
 			"\r\n"
 			"%d\n",ad7705fastcgi.currentSample);
 		FCGX_FPrintF(request.out, "%s", buffer);
 		FCGX_Finish_r(&request);
-		//fprintf(stderr,"Sent CGI requests.\n");
 	}
 	ad7705comm->stop();
 	delete ad7705comm;
