@@ -73,12 +73,17 @@ public:
 			add(key, (double)value);
 		}
 
-		void add(std::string key, int value) {
-			add(key, (double)value);
+		void add(std::string key, long value) {
+			if (!firstEntry) {
+				json = json + ", ";
+			}
+			json = json + "\"" + key + "\":";
+			json = json + std::to_string(value);
+			firstEntry = 0;
 		}
 
-		void add(std::string key, long value) {
-			add(key, (double)value);
+		void add(std::string key, int value) {
+			add(key, (long)value);
 		}
 
 		/**
