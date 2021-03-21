@@ -99,9 +99,10 @@ the fastcgi server.
 Then point your web-browser to your raspberry pi. You should see the current
 temperatue reading on the screen and a plot with dygraph.
 
-The demo transmits only a single value but that can easily turned
-into transmitting JSON packets for more complex data
-and then decoded with jquery in the browser.
+The demo uses JSON packages. Here, it's just a timestamp in epoch time
+and the temperature. The class `FastCGI.h` is not just a wrapper for
+the fast-CGI method but is also able to package JSON which can then be
+read by JavaScipt in the browser.
 
 
 
