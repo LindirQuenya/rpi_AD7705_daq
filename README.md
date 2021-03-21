@@ -105,35 +105,6 @@ and then decoded with jquery in the brower.
 
 
 
-## UDP
-
-### UDP transmitter
-
-The program `udp_transmit` sends the raw ADC values as ASCII strings
-with a carriage retun at the end to port 65000. This program can
-run in the background. Start it with:
-
-```
-./udp_transmit &
-```
-to run in the background.
-
-To stop it when running in the background look up its process ID with
-`ps ax` and then send HUP with the kill command:
-
-```
-kill -HUP <pid>
-```
-
-### UDP test receiver
-
-For debugging purposes there is a python script which prints
-the UDP packets on the screen: `UDP_receive.py`.
-
-
-
-
-
 ## Author: Bernd Porr
 
 bernd.porr@glasgow.ac.uk
