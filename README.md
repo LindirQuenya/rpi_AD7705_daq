@@ -87,7 +87,8 @@ in the background with:
 ```
 nohup ./ad7705fastcgi &
 ```
-which creates a fastcgi server on port 65001.
+which creates a socket under `\tmp\adc7705socket` to communicate with
+the fastcgi server.
 
 ### Configuring the nginx for FastCGI
 

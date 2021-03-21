@@ -3,7 +3,7 @@ server {
         server_name  rpi.berndporr.me.uk;
 
         location /data/ {
-          fastcgi_pass   127.0.0.1:65001;
+          fastcgi_pass   unix:/tmp/adc7705socket;
         }
 
 	location / {
