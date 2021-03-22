@@ -33,6 +33,18 @@
 				      drawPoints: true,
 				      labels: ['Time', 'Temperature'],
 				  });
+
+	      $("#driver").click(function(event){
+		  $.post( 
+                      "/data/:80",
+                      {
+			  temperature: 20,
+			  steps: 100
+		      }
+		  );
+		  
+              });
+	      
 	      window.intervalId = setInterval(function() {
 		  // callback for interval timer for every second
 		  $.getJSON("/data/:80",function(result){
@@ -58,6 +70,7 @@
 	<br />
 <br />
 <br />
+<input type = "button" id = "driver" value = "Force constant 20C" />
 <br />
 <br />
 <p><a href="/">Main page</a></p>
