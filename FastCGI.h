@@ -135,16 +135,23 @@ public:
  private:
 	static void exec(FastCGIHandler* fastCGIHandler) {
 		while ((fastCGIHandler->running) && (FCGX_Accept_r(&(fastCGIHandler->request)) == 0)) {
-			// create the header
-			std::string buffer = "Content-type: "+fastCGIHandler->fastCGICallback->getContentType();
-			buffer = buffer + "; charset=utf-8\r\n";
-			buffer = buffer + "\r\n";
-			// append the data
-			buffer = buffer + fastCGIHandler->fastCGICallback->getDataString();
-			buffer = buffer + "\r\n";
-			// send the data to the web server
-			FCGX_PutStr(buffer.c_str(), buffer.length(), fastCGIHandler->request.out);
-			FCGX_Finish_r(&(fastCGIHandler->request));
+			char * method = FCGX_GetParam("REQUEST_METHOD", fastCGIHandler->request.envp);
+			if (method == nullptr) {
+				fprintf(stderr,"Please add 'include fastcgi_params;' to the nginx conf.\n");
+				throw "FastCGI parameters missing.\n");
+			}
+			if (strcmp(method, "GET") == 0) {
+				// create the header
+				std::string buffer = "Content-type: "+fastCGIHandler->fastCGICallback->getContentType();
+				buffer = buffer + "; charset=utf-8\r\n";
+				buffer = buffer + "\r\n";
+				// append the data
+				buffer = buffer + fastCGIHandler->fastCGICallback->getDataString();
+				buffer = buffer + "\r\n";
+				// send the data to the web server
+				FCGX_PutStr(buffer.c_str(), buffer.length(), fastCGIHandler->request.out);
+				FCGX_Finish_r(&(fastCGIHandler->request));
+			}
 		}
 	}
 
