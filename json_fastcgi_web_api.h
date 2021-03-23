@@ -19,26 +19,27 @@
 #include <map>
 
 /**
- * C++ wrapper around the fastCGI which is being used by
- * nginx, apache and lighttpd which acts as an external
- * html generator.
- * It sends out JSON packets and receives JSON packets.
+ * C++ wrapper around the fastCGI 
+ * which sends JSON and receives JSON.
  **/
 class JSONCGIHandler {
 public:
 	/**
-	 * Callback handler which needs to be implemented by the main
+	 * GET callback handler which needs to be implemented by the main
 	 * program.
+	 * This needs to provide the JSON data payload either by using
+	 * the simple JSONGenerator below or an external library.
 	 **/
 	class GETCallback {
 	public:
 		/**
 		 * Needs to return the payload data sent to the web browser.
+		 * Use the JSON generator class or an external json generator.
 		 **/
-		virtual std::string getDataString() = 0;
+		virtual std::string getJSONString() = 0;
 		/**
 		 * The content type of the payload. That's by default it's
-		 * "application/json" but can be overloaded for CSV or text.
+		 * "application/json" but can be overloaded if needed.
 		 **/
 		virtual std::string getContentType() { return "application/json"; }
 	};
@@ -51,9 +52,11 @@ public:
 	class POSTCallback {
 	public:
 		/**
-		 * Needs to return the payload data sent to the web browser.
+		 * Receives the data from the web browser in JSON format.
+		 * Use jsonDecoder() to decode the JSON or use an external
+		 * library.
 		 **/
-		virtual void hasData(std::map<std::string,std::string>) = 0;
+		virtual void postJSONString(std::string json) = 0;
 	};
 	
 
@@ -110,8 +113,33 @@ public:
 		std::string json = "{";
 		int firstEntry = 1;
 	};
-	
+
+
 public:
+	static std::map<std::string,std::string> jsonDecoder(std::string s) {
+		size_t pos = 0;
+		std::map<std::string,std::string> postMap;
+		while (1) {
+			std::string token;
+			pos = s.find("&");
+			if (pos == std::string::npos) {
+				token = s;
+			} else {
+				token = s.substr(0, pos);
+			}
+			size_t pos2 = token.find("=");
+			if (pos2 != std::string::npos) {
+				std::string key = token.substr(0,pos2);
+				std::string value = token.substr(pos2+1,token.length());
+				postMap[key] = value;
+			}
+			if (pos == std::string::npos) break;
+			s.erase(0, pos + 1);
+		}
+		return postMap;
+	}
+
+	
 	/**
 	 * Constructor which inits it and starts the main thread.
 	 * Provide an instance of the callback handler which provides the
@@ -165,7 +193,7 @@ public:
 				buffer = buffer + "; charset=utf-8\r\n";
 				buffer = buffer + "\r\n";
 				// append the data
-				buffer = buffer + fastCGIHandler->getCallback->getDataString();
+				buffer = buffer + fastCGIHandler->getCallback->getJSONString();
 				buffer = buffer + "\r\n";
 				// send the data to the web server
 				FCGX_PutStr(buffer.c_str(), buffer.length(), fastCGIHandler->request.out);
@@ -179,28 +207,8 @@ public:
 				char* tmp = new char[reqLen];
 				FCGX_GetStr(tmp,reqLen,fastCGIHandler->request.in);
 				tmp[reqLen - 1] = 0;
-				std::string s = tmp;
-				size_t pos = 0;
-				std::map<std::string,std::string> postArgs;
-				while (1) {
-					std::string token;
-					pos = s.find("&");
-					if (pos == std::string::npos) {
-						token = s;
-					} else {
-						token = s.substr(0, pos);
-					}
-					size_t pos2 = token.find("=");
-					if (pos2 != std::string::npos) {
-						std::string key = token.substr(0,pos2);
-						std::string value = token.substr(pos2+1,token.length());
-						postArgs[key] = value;
-					}
-					if (pos == std::string::npos) break;
-					s.erase(0, pos + 1);
-				}
 				if (nullptr != fastCGIHandler->postCallback) {
-					fastCGIHandler->postCallback->hasData(postArgs);
+					fastCGIHandler->postCallback->postJSONString(tmp);
 				}
 				delete[] tmp;
 				// create the header

@@ -12,7 +12,7 @@
  */
 
 #include "AD7705Comm.h"
-#include "JSON_cgi.h"
+#include "json_fastcgi_web_api.h"
 
 
 
@@ -121,7 +121,7 @@ public:
 	 * The callback creates two json entries. One with the
 	 * timestamp and one with the temperature from the sensor.
 	 **/
-	virtual std::string getDataString() {
+	virtual std::string getJSONString() {
 		JSONCGIHandler::JSONGenerator jsonGenerator;
 		jsonGenerator.add("epoch",(long)time(NULL));
 		jsonGenerator.add("temperature",ad7705fastcgi->currentTemperature);
@@ -143,7 +143,8 @@ public:
 	 * As a crude example we force the temperature readings
 	 * to be 20 degrees for a certain number of timesteps.
 	 **/
-	virtual void hasData(std::map<std::string,std::string> m) {
+	virtual void postJSONString(std::string json) {
+		auto m = JSONCGIHandler::jsonDecoder(json);
 		float temp = atof(m["temperature"].c_str());
 		int steps = atoi(m["steps"].c_str());
 		ad7705fastcgi->forceTemperature(temp,steps);
