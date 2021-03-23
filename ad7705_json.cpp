@@ -143,8 +143,8 @@ public:
 	 * As a crude example we force the temperature readings
 	 * to be 20 degrees for a certain number of timesteps.
 	 **/
-	virtual void postJSONString(std::string json) {
-		auto m = JSONCGIHandler::jsonDecoder(json);
+	virtual void postString(std::string arg) {
+		auto m = JSONCGIHandler::postDecoder(arg);
 		float temp = atof(m["temperature"].c_str());
 		int steps = atoi(m["steps"].c_str());
 		ad7705fastcgi->forceTemperature(temp,steps);

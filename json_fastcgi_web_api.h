@@ -5,15 +5,11 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
-#include <linux/types.h>
-#include <linux/spi/spidev.h>
 #include <sys/signal.h>
 #include <sys/stat.h>
 #include <sys/socket.h>
 #include <iostream>
-#include "fcgio.h"
+#include <fcgio.h>
 #include <thread>
 #include <string>
 #include <map>
@@ -53,10 +49,10 @@ public:
 	public:
 		/**
 		 * Receives the data from the web browser in JSON format.
-		 * Use jsonDecoder() to decode the JSON or use an external
+		 * Use postDecoder() to decode the JSON or use an external
 		 * library.
 		 **/
-		virtual void postJSONString(std::string json) = 0;
+		virtual void postString(std::string postArg) = 0;
 	};
 	
 
@@ -67,7 +63,7 @@ public:
 	class JSONGenerator {
 	public:
 		/**
-		 * Adds a JSON entry
+		 * Adds a JSON entry: string
 		 **/
 		void add(std::string key, std::string value) {
 			if (!firstEntry) {
@@ -78,6 +74,9 @@ public:
 			firstEntry = 0;
 		}
 
+		/**
+		 * Adds a JSON entry: double
+		 **/
 		void add(std::string key, double value) {
 			if (!firstEntry) {
 				json = json + ", ";
@@ -87,10 +86,16 @@ public:
 			firstEntry = 0;
 		}
 
+		/**
+		 * Adds a JSON entry: float
+		 **/
 		void add(std::string key, float value) {
 			add(key, (double)value);
 		}
 
+		/**
+		 * Adds a JSON entry: long int
+		 **/
 		void add(std::string key, long value) {
 			if (!firstEntry) {
 				json = json + ", ";
@@ -100,12 +105,15 @@ public:
 			firstEntry = 0;
 		}
 
+		/**
+		 * Adds a JSON entry: int
+		 **/
 		void add(std::string key, int value) {
 			add(key, (long)value);
 		}
 
 		/**
-		 * Gets the json
+		 * Gets the json string
 		 **/
 		std::string getJSON() { return json + "}"; }
 		
@@ -116,7 +124,12 @@ public:
 
 
 public:
-	static std::map<std::string,std::string> jsonDecoder(std::string s) {
+	/**
+	 * Parses a POST string and returns a map with value/key pairs.
+	 * Note this is a simple parser and it won't deal with nested
+	 * structures and won't do any special character decoding.
+	 **/
+	static std::map<std::string,std::string> postDecoder(std::string s) {
 		size_t pos = 0;
 		std::map<std::string,std::string> postMap;
 		while (1) {
@@ -208,7 +221,7 @@ public:
 				FCGX_GetStr(tmp,reqLen,fastCGIHandler->request.in);
 				tmp[reqLen - 1] = 0;
 				if (nullptr != fastCGIHandler->postCallback) {
-					fastCGIHandler->postCallback->postJSONString(tmp);
+					fastCGIHandler->postCallback->postString(tmp);
 				}
 				delete[] tmp;
 				// create the header
