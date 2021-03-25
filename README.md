@@ -105,10 +105,14 @@ the fastcgi server.
 Then point your web-browser to your raspberry pi. You should see the current
 temperatue reading on the screen and a plot with dygraph.
 
-The demo uses JSON packages. Here, it's just a timestamp in epoch time
+The demo uses JSON packages which are retrieved via the server subdirectory
+`/sensor/`. Here, it's just a timestamp in epoch time
 and the temperature. The class `json_fastcgi_web_api.h` is not just a wrapper for
 the fast-CGI method but is also able to package JSON which can then be
 read by JavaScipt in the browser.
+
+See https://github.com/berndporr/json_fastcgi_web_api for the complete documentation
+of the fastCGI server.
 
 ![alt tag](screenshot.png)
 
