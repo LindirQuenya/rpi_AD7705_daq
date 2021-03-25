@@ -82,6 +82,17 @@ temperature sensor.
 
 ### FastCGI server
 
+Within your working directory clone the json_fast_web_api repository:
+```
+git clone git@github.com:berndporr/json_fastcgi_web_api.git
+```
+
+Compile it:
+```
+cmake .
+make
+```
+
 Start `ad7705fastcgi`
 in the background with:
 ```
@@ -100,7 +111,7 @@ Then point your web-browser to your raspberry pi. You should see the current
 temperatue reading on the screen and a plot with dygraph.
 
 The demo uses JSON packages. Here, it's just a timestamp in epoch time
-and the temperature. The class `FastCGI.h` is not just a wrapper for
+and the temperature. The class `json_fastcgi_web_api.h` is not just a wrapper for
 the fast-CGI method but is also able to package JSON which can then be
 read by JavaScipt in the browser.
 
