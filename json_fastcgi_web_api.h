@@ -162,8 +162,8 @@ public:
 	 * received json packets as a map.
 	 **/
 	JSONCGIHandler(GETCallback* argGetCallback,
-		       POSTCallback* argPostCallback = nullptr,
-		       const char socketpath[] = "/tmp/fastcgisocket") {
+		       const char socketpath[] = "/tmp/fastcgisocket",
+		       POSTCallback* argPostCallback = nullptr) {
 		getCallback = argGetCallback;
 		postCallback = argPostCallback;
 		// set it to zero
@@ -213,7 +213,7 @@ public:
 				FCGX_Finish_r(&(fastCGIHandler->request));
 			}
 			if (strcmp(method, "POST") == 0) {
-				long reqLen = 1;
+				long reqLen = 0;
 				char * content_length_str = FCGX_GetParam("CONTENT_LENGTH",
 									  fastCGIHandler->request.envp);
 				if (content_length_str) reqLen = atol(content_length_str)+1;
