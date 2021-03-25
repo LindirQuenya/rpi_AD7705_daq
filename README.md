@@ -26,6 +26,12 @@ The design files (for EAGLE) are in the subdirectory "pcb".
 
 ## Building the demo / test:
 
+We use a submodule (another git repo within this repo) do:
+```
+git submodule init
+git submodule update
+```
+
 To build:
 
     cmake .
@@ -81,17 +87,6 @@ measurement program which continously measures the data from a
 temperature sensor.
 
 ### FastCGI server
-
-Within your working directory clone the json_fast_web_api repository:
-```
-git clone git@github.com:berndporr/json_fastcgi_web_api.git
-```
-
-Compile it:
-```
-cmake .
-make
-```
 
 Start `ad7705fastcgi`
 in the background with:
