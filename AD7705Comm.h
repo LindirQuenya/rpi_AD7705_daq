@@ -24,7 +24,7 @@
 #include <linux/spi/spidev.h>
 #include <thread>  
 
-#include "gpio-sysfs.h"
+
 
 
 /**
@@ -89,7 +89,6 @@ private:
 	const uint16_t delay = 0;
 	const uint8_t bpw   = 8;
 	int fd = 0;
-	int sysfs_fd = 0;
 	std::thread* daqThread = NULL;
 	int running = 0;
 	AD7705callback* ad7705callback = NULL;
