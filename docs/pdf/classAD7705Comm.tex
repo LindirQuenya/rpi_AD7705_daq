@@ -9,35 +9,31 @@ This class reads data from the A\+D7705 in the background (separate thread) and 
 
 {\ttfamily \#include $<$A\+D7705\+Comm.\+h$>$}
 
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classAD7705Comm_a610f7a6ad7272b6d717be0cb5afcbcd1}\label{classAD7705Comm_a610f7a6ad7272b6d717be0cb5afcbcd1}} 
+enum \mbox{\hyperlink{classAD7705Comm_a610f7a6ad7272b6d717be0cb5afcbcd1}{Sampling\+Rate}} \{ {\bfseries S\+A\+M\+P\+L\+I\+N\+G\+\_\+\+R\+A\+T\+E\+\_\+50\+HZ} = 0, 
+{\bfseries S\+A\+M\+P\+L\+I\+N\+G\+\_\+\+R\+A\+T\+E\+\_\+60\+HZ} = 1, 
+{\bfseries S\+A\+M\+P\+L\+I\+N\+G\+\_\+\+R\+A\+T\+E\+\_\+250\+HZ} = 2, 
+{\bfseries S\+A\+M\+P\+L\+I\+N\+G\+\_\+\+R\+A\+T\+E\+\_\+500\+HZ} = 3
+ \}
+\begin{DoxyCompactList}\small\item\em Sampling rates. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{classAD7705Comm_a743ca267f21f2f096a750a59981fdf7b}{A\+D7705\+Comm}} (const char $\ast$spi\+Device=\char`\"{}/dev/spidev0.\+0\char`\"{})
 \begin{DoxyCompactList}\small\item\em Constructor with the spi\+Device. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classAD7705Comm_ae95e391a92d28c618b6290805c055031}\label{classAD7705Comm_ae95e391a92d28c618b6290805c055031}} 
+\mbox{\Hypertarget{classAD7705Comm_a6f101db8298da94c1bb82c2735015eb1}\label{classAD7705Comm_a6f101db8298da94c1bb82c2735015eb1}} 
+\mbox{\hyperlink{classAD7705Comm_a6f101db8298da94c1bb82c2735015eb1}{$\sim$\+A\+D7705\+Comm}} ()
+\begin{DoxyCompactList}\small\item\em Destructor which makes sure the data acquisition has stopped. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classAD7705Comm_ae95e391a92d28c618b6290805c055031}{set\+Callback}} (\mbox{\hyperlink{classAD7705callback}{A\+D7705callback}} $\ast$cb)
 \begin{DoxyCompactList}\small\item\em Sets the callback which is called whenever there is a sample. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classAD7705Comm_a3dc0d7039907ccf8a183384ef7073d53}\label{classAD7705Comm_a3dc0d7039907ccf8a183384ef7073d53}} 
-void \mbox{\hyperlink{classAD7705Comm_a3dc0d7039907ccf8a183384ef7073d53}{start}} (int sampling\+Rate=\mbox{\hyperlink{classAD7705Comm_aab0ef22145bd27dd17f444a28637149b}{S\+A\+M\+P\+L\+I\+N\+G\+\_\+\+R\+A\+T\+E\+\_\+50\+HZ}})
+void \mbox{\hyperlink{classAD7705Comm_a5ba0b25f453e9e95447448a4b3f6764c}{start}} (\mbox{\hyperlink{classAD7705Comm_a610f7a6ad7272b6d717be0cb5afcbcd1}{Sampling\+Rate}} sampling\+Rate=S\+A\+M\+P\+L\+I\+N\+G\+\_\+\+R\+A\+T\+E\+\_\+50\+HZ)
 \begin{DoxyCompactList}\small\item\em Starts the data acquisition in the background and the callback is called with new samples. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{classAD7705Comm_a6817c77451e4a0f7a85a79c1c39d158e}\label{classAD7705Comm_a6817c77451e4a0f7a85a79c1c39d158e}} 
 void \mbox{\hyperlink{classAD7705Comm_a6817c77451e4a0f7a85a79c1c39d158e}{stop}} ()
 \begin{DoxyCompactList}\small\item\em Stops the data acquistion. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Static Public Attributes}
-\begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{classAD7705Comm_aab0ef22145bd27dd17f444a28637149b}\label{classAD7705Comm_aab0ef22145bd27dd17f444a28637149b}} 
-static const int \mbox{\hyperlink{classAD7705Comm_aab0ef22145bd27dd17f444a28637149b}{S\+A\+M\+P\+L\+I\+N\+G\+\_\+\+R\+A\+T\+E\+\_\+50\+HZ}} = 0
-\begin{DoxyCompactList}\small\item\em Sampling rates. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classAD7705Comm_ae6ae5f05f120d3da114b3e3aef7d4175}\label{classAD7705Comm_ae6ae5f05f120d3da114b3e3aef7d4175}} 
-static const int {\bfseries S\+A\+M\+P\+L\+I\+N\+G\+\_\+\+R\+A\+T\+E\+\_\+60\+HZ} = 1
-\item 
-\mbox{\Hypertarget{classAD7705Comm_a64bb700f8e1aa77e0a2c7ec46dd52c22}\label{classAD7705Comm_a64bb700f8e1aa77e0a2c7ec46dd52c22}} 
-static const int {\bfseries S\+A\+M\+P\+L\+I\+N\+G\+\_\+\+R\+A\+T\+E\+\_\+250\+HZ} = 2
-\item 
-\mbox{\Hypertarget{classAD7705Comm_ab7895515d0635945f46c6417af073bbd}\label{classAD7705Comm_ab7895515d0635945f46c6417af073bbd}} 
-static const int {\bfseries S\+A\+M\+P\+L\+I\+N\+G\+\_\+\+R\+A\+T\+E\+\_\+500\+HZ} = 3
-\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -55,6 +51,44 @@ This class reads data from the A\+D7705 in the background (separate thread) and 
 Constructor with the spi\+Device. 
 
 The default device is /dev/spidev0.0. 
+\begin{DoxyParams}{Parameters}
+{\em spi\+Device} & The raw /dev spi device. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classAD7705Comm_ae95e391a92d28c618b6290805c055031}\label{classAD7705Comm_ae95e391a92d28c618b6290805c055031}} 
+\index{AD7705Comm@{AD7705Comm}!setCallback@{setCallback}}
+\index{setCallback@{setCallback}!AD7705Comm@{AD7705Comm}}
+\doxysubsubsection{\texorpdfstring{setCallback()}{setCallback()}}
+{\footnotesize\ttfamily void A\+D7705\+Comm\+::set\+Callback (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classAD7705callback}{A\+D7705callback}} $\ast$}]{cb }\end{DoxyParamCaption})}
+
+
+
+Sets the callback which is called whenever there is a sample. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cb} & Pointer to the callback interface. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classAD7705Comm_a5ba0b25f453e9e95447448a4b3f6764c}\label{classAD7705Comm_a5ba0b25f453e9e95447448a4b3f6764c}} 
+\index{AD7705Comm@{AD7705Comm}!start@{start}}
+\index{start@{start}!AD7705Comm@{AD7705Comm}}
+\doxysubsubsection{\texorpdfstring{start()}{start()}}
+{\footnotesize\ttfamily void A\+D7705\+Comm\+::start (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classAD7705Comm_a610f7a6ad7272b6d717be0cb5afcbcd1}{Sampling\+Rate}}}]{sampling\+Rate = {\ttfamily SAMPLING\+\_\+RATE\+\_\+50HZ} }\end{DoxyParamCaption})}
+
+
+
+Starts the data acquisition in the background and the callback is called with new samples. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sampling\+Rate} & The sampling rate of the A\+DC. \\
+\hline
+\end{DoxyParams}
+
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

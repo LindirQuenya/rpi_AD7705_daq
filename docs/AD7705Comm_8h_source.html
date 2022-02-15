@@ -93,87 +93,87 @@ $(document).ready(function(){initNavTree('AD7705Comm_8h_source.html',''); initRe
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> * Copyright (c) 2007  MontaVista Software, Inc.</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> * Copyright (c) 2007  Anton Vorontsov &lt;avorontsov@ru.mvista.com&gt;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment"> * Copyright (c) 2013-2020  Bernd Porr &lt;mail@berndporr.me.uk&gt;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment"> * Copyright (c) 2013-2022  Bernd Porr &lt;mail@berndporr.me.uk&gt;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment"> * This program is free software; you can redistribute it and/or modify</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment"> * it under the terms of the GNU General Public License as published by</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"> * the Free Software Foundation; either version 2 of the License.</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;fcntl.h&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;sys/ioctl.h&gt;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;linux/types.h&gt;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;linux/spi/spidev.h&gt;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;thread&gt;</span>  </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;fcntl.h&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;sys/ioctl.h&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;linux/types.h&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;linux/spi/spidev.h&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;thread&gt;</span>  </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;gpio-sysfs.h&quot;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="classAD7705callback.html">   34</a></span>&#160;<span class="keyword">class </span><a class="code" href="classAD7705callback.html">AD7705callback</a> {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classAD7705callback.html#a5d0d89982d457010449e8ec76b63f85e">hasSample</a>(<span class="keywordtype">int</span> sample) = 0;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;};</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classAD7705callback.html">   33</a></span>&#160;<span class="keyword">class </span><a class="code" href="classAD7705callback.html">AD7705callback</a> {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classAD7705callback.html#a5d0d89982d457010449e8ec76b63f85e">hasSample</a>(<span class="keywordtype">int</span> sample) = 0;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;};</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classAD7705Comm.html">   47</a></span>&#160;<span class="keyword">class </span><a class="code" href="classAD7705Comm.html">AD7705Comm</a> {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classAD7705Comm.html">   46</a></span>&#160;<span class="keyword">class </span><a class="code" href="classAD7705Comm.html">AD7705Comm</a> {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <a class="code" href="classAD7705Comm.html#a743ca267f21f2f096a750a59981fdf7b">AD7705Comm</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* spiDevice = <span class="stringliteral">&quot;/dev/spidev0.0&quot;</span>);</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    ~<a class="code" href="classAD7705Comm.html">AD7705Comm</a>() {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <a class="code" href="classAD7705Comm.html#a6817c77451e4a0f7a85a79c1c39d158e">stop</a>();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    }</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classAD7705Comm.html#ae95e391a92d28c618b6290805c055031">setCallback</a>(<a class="code" href="classAD7705callback.html">AD7705callback</a>* cb);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classAD7705Comm.html#a3dc0d7039907ccf8a183384ef7073d53">start</a>(<span class="keywordtype">int</span> samplingRate = <a class="code" href="classAD7705Comm.html#aab0ef22145bd27dd17f444a28637149b">SAMPLING_RATE_50HZ</a>);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classAD7705Comm.html#a6817c77451e4a0f7a85a79c1c39d158e">stop</a>();</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="classAD7705Comm.html#aab0ef22145bd27dd17f444a28637149b">   79</a></span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="classAD7705Comm.html#aab0ef22145bd27dd17f444a28637149b">SAMPLING_RATE_50HZ</a> = 0;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> SAMPLING_RATE_60HZ = 1;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> SAMPLING_RATE_250HZ = 2;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> SAMPLING_RATE_500HZ = 3;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">const</span> uint8_t mode = SPI_CPHA | SPI_CPOL;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> drdy_GPIO = 22;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">const</span> uint32_t speed = 500000;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keyword">const</span> uint16_t delay = 0;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keyword">const</span> uint8_t bpw   = 8;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordtype">int</span> fd = 0;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordtype">int</span> sysfs_fd = 0;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    std::thread* daqThread = NULL;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordtype">int</span> running = 0;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <a class="code" href="classAD7705callback.html">AD7705callback</a>* ad7705callback = NULL;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordtype">int</span> spi_transfer(<span class="keywordtype">int</span> fd, uint8_t* tx, uint8_t* rx, <span class="keywordtype">int</span> n);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordtype">void</span> writeReset(<span class="keywordtype">int</span> fd);</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordtype">void</span> writeReg(<span class="keywordtype">int</span> fd, uint8_t v);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    uint8_t readReg(<span class="keywordtype">int</span> fd);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordtype">int</span> readData(<span class="keywordtype">int</span> fd);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> run(<a class="code" href="classAD7705Comm.html">AD7705Comm</a>* ad7705comm);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;};</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="classAD7705Comm.html#a6f101db8298da94c1bb82c2735015eb1">   60</a></span>&#160;    <a class="code" href="classAD7705Comm.html#a6f101db8298da94c1bb82c2735015eb1">~AD7705Comm</a>() {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <a class="code" href="classAD7705Comm.html#a6817c77451e4a0f7a85a79c1c39d158e">stop</a>();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    }</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classAD7705Comm.html#a610f7a6ad7272b6d717be0cb5afcbcd1">   67</a></span>&#160;    <span class="keyword">enum</span> <a class="code" href="classAD7705Comm.html#a610f7a6ad7272b6d717be0cb5afcbcd1">SamplingRate</a> {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        SAMPLING_RATE_50HZ = 0,</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        SAMPLING_RATE_60HZ = 1,</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        SAMPLING_RATE_250HZ = 2,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        SAMPLING_RATE_500HZ = 3</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    };</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classAD7705Comm.html#ae95e391a92d28c618b6290805c055031">setCallback</a>(<a class="code" href="classAD7705callback.html">AD7705callback</a>* cb);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classAD7705Comm.html#a5ba0b25f453e9e95447448a4b3f6764c">start</a>(<a class="code" href="classAD7705Comm.html#a610f7a6ad7272b6d717be0cb5afcbcd1">SamplingRate</a> samplingRate = SAMPLING_RATE_50HZ);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classAD7705Comm.html#a6817c77451e4a0f7a85a79c1c39d158e">stop</a>();</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">const</span> uint8_t mode = SPI_CPHA | SPI_CPOL;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> drdy_GPIO = 22;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keyword">const</span> uint32_t speed = 500000;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keyword">const</span> uint16_t delay = 0;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keyword">const</span> uint8_t bpw   = 8;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordtype">int</span> fd = 0;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    std::thread* daqThread = NULL;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordtype">int</span> running = 0;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <a class="code" href="classAD7705callback.html">AD7705callback</a>* ad7705callback = NULL;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordtype">int</span> spi_transfer(<span class="keywordtype">int</span> fd, uint8_t* tx, uint8_t* rx, <span class="keywordtype">int</span> n);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordtype">void</span> writeReset(<span class="keywordtype">int</span> fd);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordtype">void</span> writeReg(<span class="keywordtype">int</span> fd, uint8_t v);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    uint8_t readReg(<span class="keywordtype">int</span> fd);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keywordtype">int</span> readData(<span class="keywordtype">int</span> fd);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> run(<a class="code" href="classAD7705Comm.html">AD7705Comm</a>* ad7705comm);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;};</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclassAD7705Comm_html"><div class="ttname"><a href="classAD7705Comm.html">AD7705Comm</a></div><div class="ttdoc">This class reads data from the AD7705 in the background (separate thread) and calls a callback functi...</div><div class="ttdef"><b>Definition:</b> AD7705Comm.h:47</div></div>
+<div class="ttc" id="aclassAD7705Comm_html"><div class="ttname"><a href="classAD7705Comm.html">AD7705Comm</a></div><div class="ttdoc">This class reads data from the AD7705 in the background (separate thread) and calls a callback functi...</div><div class="ttdef"><b>Definition:</b> AD7705Comm.h:46</div></div>
 <div class="ttc" id="aclassAD7705Comm_html_a743ca267f21f2f096a750a59981fdf7b"><div class="ttname"><a href="classAD7705Comm.html#a743ca267f21f2f096a750a59981fdf7b">AD7705Comm::AD7705Comm</a></div><div class="ttdeci">AD7705Comm(const char *spiDevice=&quot;/dev/spidev0.0&quot;)</div><div class="ttdoc">Constructor with the spiDevice.</div></div>
-<div class="ttc" id="aclassAD7705Comm_html_aab0ef22145bd27dd17f444a28637149b"><div class="ttname"><a href="classAD7705Comm.html#aab0ef22145bd27dd17f444a28637149b">AD7705Comm::SAMPLING_RATE_50HZ</a></div><div class="ttdeci">static const int SAMPLING_RATE_50HZ</div><div class="ttdoc">Sampling rates.</div><div class="ttdef"><b>Definition:</b> AD7705Comm.h:79</div></div>
-<div class="ttc" id="aclassAD7705callback_html"><div class="ttname"><a href="classAD7705callback.html">AD7705callback</a></div><div class="ttdoc">Callback for new samples which needs to be implemented by the main program.</div><div class="ttdef"><b>Definition:</b> AD7705Comm.h:34</div></div>
+<div class="ttc" id="aclassAD7705callback_html"><div class="ttname"><a href="classAD7705callback.html">AD7705callback</a></div><div class="ttdoc">Callback for new samples which needs to be implemented by the main program.</div><div class="ttdef"><b>Definition:</b> AD7705Comm.h:33</div></div>
+<div class="ttc" id="aclassAD7705Comm_html_a610f7a6ad7272b6d717be0cb5afcbcd1"><div class="ttname"><a href="classAD7705Comm.html#a610f7a6ad7272b6d717be0cb5afcbcd1">AD7705Comm::SamplingRate</a></div><div class="ttdeci">SamplingRate</div><div class="ttdoc">Sampling rates.</div><div class="ttdef"><b>Definition:</b> AD7705Comm.h:67</div></div>
 <div class="ttc" id="aclassAD7705Comm_html_ae95e391a92d28c618b6290805c055031"><div class="ttname"><a href="classAD7705Comm.html#ae95e391a92d28c618b6290805c055031">AD7705Comm::setCallback</a></div><div class="ttdeci">void setCallback(AD7705callback *cb)</div><div class="ttdoc">Sets the callback which is called whenever there is a sample.</div></div>
+<div class="ttc" id="aclassAD7705Comm_html_a5ba0b25f453e9e95447448a4b3f6764c"><div class="ttname"><a href="classAD7705Comm.html#a5ba0b25f453e9e95447448a4b3f6764c">AD7705Comm::start</a></div><div class="ttdeci">void start(SamplingRate samplingRate=SAMPLING_RATE_50HZ)</div><div class="ttdoc">Starts the data acquisition in the background and the callback is called with new samples.</div></div>
+<div class="ttc" id="aclassAD7705Comm_html_a6f101db8298da94c1bb82c2735015eb1"><div class="ttname"><a href="classAD7705Comm.html#a6f101db8298da94c1bb82c2735015eb1">AD7705Comm::~AD7705Comm</a></div><div class="ttdeci">~AD7705Comm()</div><div class="ttdoc">Destructor which makes sure the data acquisition has stopped.</div><div class="ttdef"><b>Definition:</b> AD7705Comm.h:60</div></div>
 <div class="ttc" id="aclassAD7705Comm_html_a6817c77451e4a0f7a85a79c1c39d158e"><div class="ttname"><a href="classAD7705Comm.html#a6817c77451e4a0f7a85a79c1c39d158e">AD7705Comm::stop</a></div><div class="ttdeci">void stop()</div><div class="ttdoc">Stops the data acquistion.</div></div>
 <div class="ttc" id="aclassAD7705callback_html_a5d0d89982d457010449e8ec76b63f85e"><div class="ttname"><a href="classAD7705callback.html#a5d0d89982d457010449e8ec76b63f85e">AD7705callback::hasSample</a></div><div class="ttdeci">virtual void hasSample(int sample)=0</div><div class="ttdoc">Called after a sample has arrived.</div></div>
-<div class="ttc" id="aclassAD7705Comm_html_a3dc0d7039907ccf8a183384ef7073d53"><div class="ttname"><a href="classAD7705Comm.html#a3dc0d7039907ccf8a183384ef7073d53">AD7705Comm::start</a></div><div class="ttdeci">void start(int samplingRate=SAMPLING_RATE_50HZ)</div><div class="ttdoc">Starts the data acquisition in the background and the callback is called with new samples.</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
