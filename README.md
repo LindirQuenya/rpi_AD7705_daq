@@ -48,7 +48,7 @@ To build:
 
 Run it with the command:
 
-    ./ad7705_test
+    sudo ./ad7705_test
 
 ## General usage
 

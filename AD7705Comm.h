@@ -6,7 +6,7 @@
  *
  * Copyright (c) 2007  MontaVista Software, Inc.
  * Copyright (c) 2007  Anton Vorontsov <avorontsov@ru.mvista.com>
- * Copyright (c) 2013-2020  Bernd Porr <mail@berndporr.me.uk>
+ * Copyright (c) 2013-2022  Bernd Porr <mail@berndporr.me.uk>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,9 +53,23 @@ public:
 	 **/
 	AD7705Comm(const char* spiDevice = "/dev/spidev0.0");
 
+	/**
+	 * Destructor which makes sure the data acquisition
+	 * has stopped.
+	 **/
 	~AD7705Comm() {
 		stop();
 	}
+
+	/**
+	 * Sampling rates
+	 **/
+	enum SamplingRate {
+		SAMPLING_RATE_50HZ = 0,
+		SAMPLING_RATE_60HZ = 1,
+		SAMPLING_RATE_250HZ = 2,
+		SAMPLING_RATE_500HZ = 3
+	};
 
 	/**
 	 * Sets the callback which is called whenever there is a sample
@@ -66,21 +80,12 @@ public:
 	 * Starts the data acquisition in the background and the
 	 * callback is called with new samples
 	 **/
-	void start(int samplingRate = SAMPLING_RATE_50HZ);
+	void start(SamplingRate samplingRate = SAMPLING_RATE_50HZ);
 
 	/**
 	 * Stops the data acquistion
 	 **/
 	void stop();
-
-	/**
-	 * Sampling rates
-	 **/
-	static const int SAMPLING_RATE_50HZ = 0;
-	static const int SAMPLING_RATE_60HZ = 1;
-	static const int SAMPLING_RATE_250HZ = 2;
-	static const int SAMPLING_RATE_500HZ = 3;
-
 
 private:
 	const uint8_t mode = SPI_CPHA | SPI_CPOL;

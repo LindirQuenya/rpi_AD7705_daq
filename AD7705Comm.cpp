@@ -113,7 +113,7 @@ void AD7705Comm::run(AD7705Comm* ad7705comm) {
 }
 
 
-void AD7705Comm::start(int samplingRate) {
+void AD7705Comm::start(SamplingRate samplingRate) {
 	if (daqThread) {
 		throw "Called while DAQ is already running.";
 	}
