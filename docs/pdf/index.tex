@@ -1,0 +1,7 @@
+The A\+D7705 is a two channel sigma delta converter which has differential inputs, a P\+GA and programmable data rates. It\textquotesingle{}s perfect for slowly changing inputs such as pressure, temperature, heart rate etc.
+
+This repo offers the class {\ttfamily \mbox{\hyperlink{classAD7705Comm}{A\+D7705\+Comm}}} which does all the low level communications with the A\+D7705. The user just need to register a callback handler which then returns the samples in realtime.
+
+The class uses the D\+R\+DY of the A\+D7705 connected to Port 22 and waits for a falling edge on this port to read the data. This is done via interrupts / poll so that the A\+DC process sleeps until new data becomes available.
+
+Github\+: \href{https://github.com/berndporr/rpi_AD7705_daq}{\texttt{ https\+://github.\+com/berndporr/rpi\+\_\+\+A\+D7705\+\_\+daq}} 
