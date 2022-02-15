@@ -13,7 +13,6 @@
  * the Free Software Foundation; either version 2 of the License.
  *
  */
-
 #include <stdint.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -50,6 +49,7 @@ public:
 	/**
 	 * Constructor with the spiDevice. The default device
 	 * is /dev/spidev0.0.
+	 * \param spiDevice The raw /dev spi device.
 	 **/
 	AD7705Comm(const char* spiDevice = "/dev/spidev0.0");
 
@@ -72,13 +72,15 @@ public:
 	};
 
 	/**
-	 * Sets the callback which is called whenever there is a sample
+	 * Sets the callback which is called whenever there is a sample.
+	 * \param cb Pointer to the callback interface.
 	 **/
 	void setCallback(AD7705callback* cb);
 
 	/**
 	 * Starts the data acquisition in the background and the
-	 * callback is called with new samples
+	 * callback is called with new samples.
+	 * \param samplingRate The sampling rate of the ADC.
 	 **/
 	void start(SamplingRate samplingRate = SAMPLING_RATE_50HZ);
 
