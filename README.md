@@ -32,6 +32,12 @@ git submodule init
 git submodule update
 ```
 
+Install the following packages:
+```
+apt-get install libcurl4-openssl-dev
+apt-get install libfcgi-dev
+```
+
 To build:
 
     cmake .
@@ -42,7 +48,7 @@ To build:
 
 Run it with the command:
 
-    ./ad7705_test
+    sudo ./ad7705_test
 
 ## General usage
 

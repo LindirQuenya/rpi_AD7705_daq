@@ -1,5 +1,6 @@
 #include "AD7705Comm.h"
 
+#include "gpio-sysfs.h"
 
 AD7705Comm::AD7705Comm(const char* spiDevice) {
 	fd = open(spiDevice, O_RDWR);
@@ -13,15 +14,6 @@ AD7705Comm::AD7705Comm(const char* spiDevice) {
 	} else {
 		fprintf(stderr,"SPI mode %d set (ret=%d).\n",mode,ret);
 	}
-	
-	// enables sysfs entry for the GPIO pin
-	gpio_export(drdy_GPIO);
-	// set to input
-	gpio_set_dir(drdy_GPIO,0);
-	// set interrupt detection to falling edge
-	gpio_set_edge(drdy_GPIO,"falling");
-	// get a file descriptor for the GPIO pin
-	sysfs_fd = gpio_fd_open(drdy_GPIO);	
 }
 
 void AD7705Comm::setCallback(AD7705callback* cb) {
@@ -88,11 +80,20 @@ int AD7705Comm::readData(int fd) {
 
 
 void AD7705Comm::run(AD7705Comm* ad7705comm) {
+	// enables sysfs entry for the GPIO pin
+	SysGPIO dataReadyGPIO(ad7705comm->drdy_GPIO);
+	dataReadyGPIO.gpio_export();
+	// set to input
+	dataReadyGPIO.gpio_set_dir(false);
+	// set interrupt detection to falling edge
+	dataReadyGPIO.gpio_set_edge("falling");
+	// get a file descriptor for the GPIO pin
+	int sysfs_fd = dataReadyGPIO.gpio_fd_open();	
 	ad7705comm->running = 1;
 	while (ad7705comm->running) {
 		// let's wait for data for max one second
 		// goes to sleep until an interrupt happens
-		int ret = gpio_poll(ad7705comm->sysfs_fd,1000);
+		int ret = dataReadyGPIO.gpio_poll(sysfs_fd,1000);
 		if (ret<1) {
 			fprintf(stderr,"Poll error %d\n",ret);
 			throw "Interrupt timeout";
@@ -107,11 +108,12 @@ void AD7705Comm::run(AD7705Comm* ad7705comm) {
 		}
 	}
 	close(ad7705comm->fd);
-	gpio_fd_close(ad7705comm->sysfs_fd);
+	close(sysfs_fd);
+	dataReadyGPIO.gpio_unexport();
 }
 
 
-void AD7705Comm::start(int samplingRate) {
+void AD7705Comm::start(SamplingRate samplingRate) {
 	if (daqThread) {
 		throw "Called while DAQ is already running.";
 	}
