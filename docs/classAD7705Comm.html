@@ -82,7 +82,6 @@ $(document).ready(function(){initNavTree('classAD7705Comm.html',''); initResizab
 
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classAD7705Comm-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -95,16 +94,6 @@ $(document).ready(function(){initNavTree('classAD7705Comm.html',''); initResizab
 
 <p><code>#include &lt;<a class="el" href="AD7705Comm_8h_source.html">AD7705Comm.h</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:a610f7a6ad7272b6d717be0cb5afcbcd1"><td class="memItemLeft" align="right" valign="top"><a id="a610f7a6ad7272b6d717be0cb5afcbcd1"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAD7705Comm.html#a610f7a6ad7272b6d717be0cb5afcbcd1">SamplingRate</a> { <b>SAMPLING_RATE_50HZ</b> = 0, 
-<b>SAMPLING_RATE_60HZ</b> = 1, 
-<b>SAMPLING_RATE_250HZ</b> = 2, 
-<b>SAMPLING_RATE_500HZ</b> = 3
- }</td></tr>
-<tr class="memdesc:a610f7a6ad7272b6d717be0cb5afcbcd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sampling rates. <br /></td></tr>
-<tr class="separator:a610f7a6ad7272b6d717be0cb5afcbcd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a743ca267f21f2f096a750a59981fdf7b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAD7705Comm.html#a743ca267f21f2f096a750a59981fdf7b">AD7705Comm</a> (const char *spiDevice=&quot;/dev/spidev0.0&quot;)</td></tr>
@@ -117,9 +106,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae95e391a92d28c618b6290805c055031"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAD7705Comm.html#ae95e391a92d28c618b6290805c055031">setCallback</a> (<a class="el" href="classAD7705callback.html">AD7705callback</a> *cb)</td></tr>
 <tr class="memdesc:ae95e391a92d28c618b6290805c055031"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the callback which is called whenever there is a sample.  <a href="classAD7705Comm.html#ae95e391a92d28c618b6290805c055031">More...</a><br /></td></tr>
 <tr class="separator:ae95e391a92d28c618b6290805c055031"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ba0b25f453e9e95447448a4b3f6764c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAD7705Comm.html#a5ba0b25f453e9e95447448a4b3f6764c">start</a> (<a class="el" href="classAD7705Comm.html#a610f7a6ad7272b6d717be0cb5afcbcd1">SamplingRate</a> samplingRate=SAMPLING_RATE_50HZ)</td></tr>
-<tr class="memdesc:a5ba0b25f453e9e95447448a4b3f6764c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the data acquisition in the background and the callback is called with new samples.  <a href="classAD7705Comm.html#a5ba0b25f453e9e95447448a4b3f6764c">More...</a><br /></td></tr>
-<tr class="separator:a5ba0b25f453e9e95447448a4b3f6764c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfc65a8038b9261e6b6673995bd62601"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAD7705Comm.html#acfc65a8038b9261e6b6673995bd62601">start</a> (<a class="el" href="structAD7705settings.html">AD7705settings</a> settings=<a class="el" href="structAD7705settings.html">AD7705settings</a>())</td></tr>
+<tr class="memdesc:acfc65a8038b9261e6b6673995bd62601"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the data acquisition in the background and the callback is called with new samples.  <a href="classAD7705Comm.html#acfc65a8038b9261e6b6673995bd62601">More...</a><br /></td></tr>
+<tr class="separator:acfc65a8038b9261e6b6673995bd62601"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6817c77451e4a0f7a85a79c1c39d158e"><td class="memItemLeft" align="right" valign="top"><a id="a6817c77451e4a0f7a85a79c1c39d158e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAD7705Comm.html#a6817c77451e4a0f7a85a79c1c39d158e">stop</a> ()</td></tr>
 <tr class="memdesc:a6817c77451e4a0f7a85a79c1c39d158e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops the data acquistion. <br /></td></tr>
@@ -181,8 +170,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a5ba0b25f453e9e95447448a4b3f6764c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ba0b25f453e9e95447448a4b3f6764c">&#9670;&nbsp;</a></span>start()</h2>
+<a id="acfc65a8038b9261e6b6673995bd62601"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfc65a8038b9261e6b6673995bd62601">&#9670;&nbsp;</a></span>start()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -190,8 +179,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">void AD7705Comm::start </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classAD7705Comm.html#a610f7a6ad7272b6d717be0cb5afcbcd1">SamplingRate</a>&#160;</td>
-          <td class="paramname"><em>samplingRate</em> = <code>SAMPLING_RATE_50HZ</code></td><td>)</td>
+          <td class="paramtype"><a class="el" href="structAD7705settings.html">AD7705settings</a>&#160;</td>
+          <td class="paramname"><em>settings</em> = <code><a class="el" href="structAD7705settings.html">AD7705settings</a>()</code></td><td>)</td>
           <td></td>
         </tr>
       </table>

@@ -9,16 +9,6 @@ This class reads data from the A\+D7705 in the background (separate thread) and 
 
 {\ttfamily \#include $<$A\+D7705\+Comm.\+h$>$}
 
-\doxysubsection*{Public Types}
-\begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{classAD7705Comm_a610f7a6ad7272b6d717be0cb5afcbcd1}\label{classAD7705Comm_a610f7a6ad7272b6d717be0cb5afcbcd1}} 
-enum \mbox{\hyperlink{classAD7705Comm_a610f7a6ad7272b6d717be0cb5afcbcd1}{Sampling\+Rate}} \{ {\bfseries S\+A\+M\+P\+L\+I\+N\+G\+\_\+\+R\+A\+T\+E\+\_\+50\+HZ} = 0, 
-{\bfseries S\+A\+M\+P\+L\+I\+N\+G\+\_\+\+R\+A\+T\+E\+\_\+60\+HZ} = 1, 
-{\bfseries S\+A\+M\+P\+L\+I\+N\+G\+\_\+\+R\+A\+T\+E\+\_\+250\+HZ} = 2, 
-{\bfseries S\+A\+M\+P\+L\+I\+N\+G\+\_\+\+R\+A\+T\+E\+\_\+500\+HZ} = 3
- \}
-\begin{DoxyCompactList}\small\item\em Sampling rates. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -29,7 +19,7 @@ enum \mbox{\hyperlink{classAD7705Comm_a610f7a6ad7272b6d717be0cb5afcbcd1}{Samplin
 \begin{DoxyCompactList}\small\item\em Destructor which makes sure the data acquisition has stopped. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classAD7705Comm_ae95e391a92d28c618b6290805c055031}{set\+Callback}} (\mbox{\hyperlink{classAD7705callback}{A\+D7705callback}} $\ast$cb)
 \begin{DoxyCompactList}\small\item\em Sets the callback which is called whenever there is a sample. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classAD7705Comm_a5ba0b25f453e9e95447448a4b3f6764c}{start}} (\mbox{\hyperlink{classAD7705Comm_a610f7a6ad7272b6d717be0cb5afcbcd1}{Sampling\+Rate}} sampling\+Rate=S\+A\+M\+P\+L\+I\+N\+G\+\_\+\+R\+A\+T\+E\+\_\+50\+HZ)
+void \mbox{\hyperlink{classAD7705Comm_acfc65a8038b9261e6b6673995bd62601}{start}} (\mbox{\hyperlink{structAD7705settings}{A\+D7705settings}} settings=\mbox{\hyperlink{structAD7705settings}{A\+D7705settings}}())
 \begin{DoxyCompactList}\small\item\em Starts the data acquisition in the background and the callback is called with new samples. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{classAD7705Comm_a6817c77451e4a0f7a85a79c1c39d158e}\label{classAD7705Comm_a6817c77451e4a0f7a85a79c1c39d158e}} 
 void \mbox{\hyperlink{classAD7705Comm_a6817c77451e4a0f7a85a79c1c39d158e}{stop}} ()
@@ -73,11 +63,11 @@ Sets the callback which is called whenever there is a sample.
 {\em cb} & Pointer to the callback interface. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classAD7705Comm_a5ba0b25f453e9e95447448a4b3f6764c}\label{classAD7705Comm_a5ba0b25f453e9e95447448a4b3f6764c}} 
+\mbox{\Hypertarget{classAD7705Comm_acfc65a8038b9261e6b6673995bd62601}\label{classAD7705Comm_acfc65a8038b9261e6b6673995bd62601}} 
 \index{AD7705Comm@{AD7705Comm}!start@{start}}
 \index{start@{start}!AD7705Comm@{AD7705Comm}}
 \doxysubsubsection{\texorpdfstring{start()}{start()}}
-{\footnotesize\ttfamily void A\+D7705\+Comm\+::start (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classAD7705Comm_a610f7a6ad7272b6d717be0cb5afcbcd1}{Sampling\+Rate}}}]{sampling\+Rate = {\ttfamily SAMPLING\+\_\+RATE\+\_\+50HZ} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void A\+D7705\+Comm\+::start (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structAD7705settings}{A\+D7705settings}}}]{settings = {\ttfamily \mbox{\hyperlink{structAD7705settings}{A\+D7705settings}}()} }\end{DoxyParamCaption})}
 
 
 

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['_7ead7705comm_8',['~AD7705Comm',['../classAD7705Comm.html#a6f101db8298da94c1bb82c2735015eb1',1,'AD7705Comm']]]
+  ['mode_7',['mode',['../structAD7705settings.html#a6227048d10f7705259a9ad474dfe7fc0',1,'AD7705settings']]],
+  ['modes_8',['Modes',['../structAD7705settings.html#a2bae523dbced40665cd146cd32dc2dde',1,'AD7705settings']]]
 ];

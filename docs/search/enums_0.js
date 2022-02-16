@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['samplingrate_17',['SamplingRate',['../classAD7705Comm.html#a610f7a6ad7272b6d717be0cb5afcbcd1',1,'AD7705Comm']]]
+  ['ain_30',['AIN',['../structAD7705settings.html#a4119e2071254e5cc2e0de59448c8e70c',1,'AD7705settings']]]
 ];

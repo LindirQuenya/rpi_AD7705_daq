@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['data_20acquisition_20with_20the_20ad7705_20on_20the_20raspberry_20pi_21_2',['Data acquisition with the AD7705 on the raspberry PI!',['../index.html',1,'']]]
+  ['channel_4',['channel',['../structAD7705settings.html#a3b2f0e72c86477180fdf42f39451621a',1,'AD7705settings']]]
 ];

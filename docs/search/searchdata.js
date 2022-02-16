@@ -1,10 +1,11 @@
 var indexSectionsWithContent =
 {
-  0: "adhs~",
+  0: "acdhmps~",
   1: "a",
   2: "ahs~",
-  3: "s",
-  4: "d"
+  3: "cmps",
+  4: "amps",
+  5: "d"
 };
 
 var indexSectionNames =
@@ -12,8 +13,9 @@ var indexSectionNames =
   0: "all",
   1: "classes",
   2: "functions",
-  3: "enums",
-  4: "pages"
+  3: "variables",
+  4: "enums",
+  5: "pages"
 };
 
 var indexSectionLabels =
@@ -21,7 +23,8 @@ var indexSectionLabels =
   0: "All",
   1: "Classes",
   2: "Functions",
-  3: "Enumerations",
-  4: "Pages"
+  3: "Variables",
+  4: "Enumerations",
+  5: "Pages"
 };
 

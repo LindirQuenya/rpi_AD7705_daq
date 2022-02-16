@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hassample_12',['hasSample',['../classAD7705callback.html#a5d0d89982d457010449e8ec76b63f85e',1,'AD7705callback']]]
+  ['hassample_21',['hasSample',['../classAD7705callback.html#a0af40415519aef054c0934f6548bab33',1,'AD7705callback']]]
 ];

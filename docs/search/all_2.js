@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hassample_3',['hasSample',['../classAD7705callback.html#a5d0d89982d457010449e8ec76b63f85e',1,'AD7705callback']]]
+  ['data_20acquisition_20with_20the_20ad7705_20on_20the_20raspberry_20pi_21_5',['Data acquisition with the AD7705 on the raspberry PI!',['../index.html',1,'']]]
 ];
