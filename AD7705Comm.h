@@ -35,7 +35,7 @@ public:
 	/**
 	 * Called after a sample has arrived.
 	 **/
-	virtual void hasSample(int sample) = 0;
+	virtual void hasSample(float sample) = 0;
 };
 
 struct AD7705settings {
@@ -43,29 +43,29 @@ struct AD7705settings {
 	 * Sampling rates
 	 **/
 	enum SamplingRates {
-		SAMPLING_RATE_50HZ = 0,
-		SAMPLING_RATE_60HZ = 1,
-		SAMPLING_RATE_250HZ = 2,
-		SAMPLING_RATE_500HZ = 3
+		FS50HZ  = 0,
+		FS60HZ  = 1,
+		FS250HZ = 2,
+		FS500HZ = 3
 	};
 
 	/**
 	 * Sampling rate requested
 	 **/
-	SamplingRates samplingRate = SAMPLING_RATE_50HZ;
+	SamplingRates samplingRate = FS50HZ;
 
 	/**
 	 * Gains of the PGA
 	 **/
 	enum PGAGains {
-		G1 = 0 << 3,
-		G2 = 1 << 3,
-		G4 = 2 << 3,
-		G8 = 3 << 3,
-		G16 = 4 << 3,
-		G32 = 5 << 3,
-		G64 = 6 << 3,
-		G128 = 7 << 3
+		G1   = 0,
+		G2   = 1,
+		G4   = 2,
+		G8   = 3,
+		G16  = 4,
+		G32  = 5,
+		G64  = 6,
+		G128 = 7
 	};
 
 	/**
@@ -77,9 +77,9 @@ struct AD7705settings {
 	 * Channel indices
 	 **/
 	enum AIN {
-		AIN1 = 0;
-		AIN2 = 1;
-	}
+		AIN1 = 0,
+		AIN2 = 1
+	};
 
 	/**
 	 * Requested input channel (0 or 1)
@@ -90,15 +90,15 @@ struct AD7705settings {
 	 * Unipolar or bipolar mode
 	 **/
 	enum Modes {
-		Bipolar = 0;
-		Unipolar = 1;
+		Bipolar  = 0,
+		Unipolar = 1
 	};
 
 	/**
 	 * Unipolar or biploar
 	 **/
 	Modes mode = Unipolar;
-}
+};
 
 
 /**
@@ -134,7 +134,7 @@ public:
 	 * callback is called with new samples.
 	 * \param samplingRate The sampling rate of the ADC.
 	 **/
-	void start(AD7705settings ad7705settings = AD7705settings() );
+	void start(AD7705settings settings = AD7705settings() );
 
 	/**
 	 * Stops the data acquistion
@@ -147,18 +147,27 @@ private:
 	const uint32_t speed = 500000;
 	const uint16_t delay = 0;
 	const uint8_t bpw   = 8;
-	uint8_t commreg = 0;
+	static constexpr float ADC_REF = 2.5;
 	int fd = 0;
 	std::thread* daqThread = NULL;
 	int running = 0;
 	AD7705callback* ad7705callback = NULL;
+	AD7705settings ad7705settings;
 
 	int spi_transfer(int fd, uint8_t* tx, uint8_t* rx, int n);
 	void writeReset(int fd);
 	void writeReg(int fd, uint8_t v);
 	uint8_t readReg(int fd);
-	int readData(int fd);
+	int16_t readData(int fd);
 	static void run(AD7705Comm* ad7705comm);
+
+        inline float pgaGainIndexToGain(AD7705settings::PGAGains gainIndex) {
+		return (float)(1 << gainIndex);
+	}
+
+	inline uint8_t commReg() {
+		return ((uint8_t)(ad7705settings.channel));
+	}
 
 };
 

@@ -67,7 +67,7 @@ uint8_t AD7705Comm::readReg(int fd) {
 		return rx;
 }
 
-int AD7705Comm::readData(int fd) {
+int16_t AD7705Comm::readData(int fd) {
 	uint8_t tx[2] = {0,0};
 		uint8_t rx[2] = {0,0};
 		
@@ -104,9 +104,10 @@ void AD7705Comm::run(AD7705Comm* ad7705comm) {
 		}
 		
 		// tell the AD7705 to read the data register (16 bits)
-		ad7705comm->writeReg(ad7705comm->fd,commreg | 0x38);
+		ad7705comm->writeReg(ad7705comm->fd, ad7705comm->commReg() | 0x38);
 		// read the data register by performing two 8 bit reads
-		int value = ad7705comm->readData(ad7705comm->fd)-0x8000;
+		const float norm = 0x8000;
+		const float value =(ad7705comm->readData(ad7705comm->fd))/norm * ADC_REF;
 		if (ad7705comm->ad7705callback) {
 			ad7705comm->ad7705callback->hasSample(value);
 		}
@@ -117,29 +118,27 @@ void AD7705Comm::run(AD7705Comm* ad7705comm) {
 }
 
 
-void AD7705Comm::start(AD7705settings ad7705settings) {
+void AD7705Comm::start(AD7705settings settings) {
 	if (daqThread) {
 		throw "Called while DAQ is already running.";
 	}
+	
+	ad7705settings = settings;
 	// resets the AD7705 so that it expects a write to the communication register
 #ifdef DEBUG
 	fprintf(stderr,"Sending reset.\n");
 #endif
 	writeReset(fd);
 
-	// the comm reg needs to contain the channel selection every time
-	// saving it for the main acquistion loop
-	commReg = ad7705settings.channel & 0x01;
-	
 	// tell the AD7705 that the next write will be to the clock register
-	writeReg(fd,commReg | 0x20);
+	writeReg(fd,commReg() | 0x20);
 	// write 00000100 : CLOCKDIV=0,CLK=1,expects 4.9152MHz input clock, sampling rate
 	writeReg(fd,0x04 | ad7705settings.samplingRate);
 	
 	// tell the AD7705 that the next write will be the setup register
-	writeReg(fd,commReg | 0x10);
-	// intiates a self calibration and then after that starts converting
-	writeReg(fd,0x40 | ad7705settings.mode | ad7705settings.pgaGain );
+	writeReg(fd,commReg() | 0x10);
+	// intiates a self calibration and then converting starts
+	writeReg(fd,0x40 | (ad7705settings.mode << 2) | ( ad7705settings.pgaGain << 3) );
 
 #ifdef DEBUG
 	fprintf(stderr,"Receiving data.\n");

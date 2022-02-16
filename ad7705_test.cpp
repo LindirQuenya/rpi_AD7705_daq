@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2007  MontaVista Software, Inc.
  * Copyright (c) 2007  Anton Vorontsov <avorontsov@ru.mvista.com>
- * Copyright (c) 2013-2020  Bernd Porr <mail@berndporr.me.uk>
+ * Copyright (c) 2013-2022  Bernd Porr <mail@berndporr.me.uk>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,8 +26,8 @@
 // Handler which receives the data and prints it on the
 // screen.
 class AD7705printSampleCallback : public AD7705callback {
-	virtual void hasSample(int v) {
-		printf("v = %d\n",v);
+	virtual void hasSample(float v) {
+		printf("v = %f\n",v);
 	}
 };
 
@@ -38,7 +38,10 @@ int main(int argc, char *argv[]) {
 	AD7705Comm* ad7705comm = new AD7705Comm();
 	AD7705printSampleCallback ad7705printSampleCallback;
 	ad7705comm->setCallback(&ad7705printSampleCallback);
-	ad7705comm->start(AD7705Comm::SAMPLING_RATE_50HZ);
+	AD7705settings s;
+	s.channel = AD7705settings::AIN2;
+	s.samplingRate = AD7705settings::FS50HZ;
+	ad7705comm->start(s);
 	getchar();
 	ad7705comm->stop();
 	delete ad7705comm;

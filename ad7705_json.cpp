@@ -73,9 +73,9 @@ public:
 	 * convert the raw ADC data to temperature
 	 * and store it in a variable.
 	 **/
-	virtual void hasSample(int v) {
+	virtual void hasSample(float v) {
 		// crude conversion to temperature
-		currentTemperature = (float)v / 65536 * 2.5 * 0.6 * 100;
+		currentTemperature = v;
 		if (forcedCounter > 0) {
 			forcedCounter--;
 			currentTemperature = forcedTemperature;
@@ -189,7 +189,7 @@ int main(int argc, char *argv[]) {
 							    "/tmp/adc7705socket");
 
 	// starting the data acquisition at the given sampling rate
-	ad7705comm->start(AD7705Comm::SAMPLING_RATE_50HZ);
+	ad7705comm->start();
 
 	// catching Ctrl-C or kill -HUP so that we can terminate properly
 	setHUPHandler();
