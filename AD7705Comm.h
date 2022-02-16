@@ -38,6 +38,68 @@ public:
 	virtual void hasSample(int sample) = 0;
 };
 
+struct AD7705settings {
+	/**
+	 * Sampling rates
+	 **/
+	enum SamplingRates {
+		SAMPLING_RATE_50HZ = 0,
+		SAMPLING_RATE_60HZ = 1,
+		SAMPLING_RATE_250HZ = 2,
+		SAMPLING_RATE_500HZ = 3
+	};
+
+	/**
+	 * Sampling rate requested
+	 **/
+	SamplingRates samplingRate = SAMPLING_RATE_50HZ;
+
+	/**
+	 * Gains of the PGA
+	 **/
+	enum PGAGains {
+		G1 = 0 << 3,
+		G2 = 1 << 3,
+		G4 = 2 << 3,
+		G8 = 3 << 3,
+		G16 = 4 << 3,
+		G32 = 5 << 3,
+		G64 = 6 << 3,
+		G128 = 7 << 3
+	};
+
+	/**
+	 * Requested gain
+	 **/
+	PGAGains pgaGain = G1;
+
+	/**
+	 * Channel indices
+	 **/
+	enum AIN {
+		AIN1 = 0;
+		AIN2 = 1;
+	}
+
+	/**
+	 * Requested input channel (0 or 1)
+	 **/
+	AIN channel = AIN1;
+
+	/**
+	 * Unipolar or bipolar mode
+	 **/
+	enum Modes {
+		Bipolar = 0;
+		Unipolar = 1;
+	};
+
+	/**
+	 * Unipolar or biploar
+	 **/
+	Modes mode = Unipolar;
+}
+
 
 /**
  * This class reads data from the AD7705 in the background (separate
@@ -60,17 +122,7 @@ public:
 	~AD7705Comm() {
 		stop();
 	}
-
-	/**
-	 * Sampling rates
-	 **/
-	enum SamplingRate {
-		SAMPLING_RATE_50HZ = 0,
-		SAMPLING_RATE_60HZ = 1,
-		SAMPLING_RATE_250HZ = 2,
-		SAMPLING_RATE_500HZ = 3
-	};
-
+       
 	/**
 	 * Sets the callback which is called whenever there is a sample.
 	 * \param cb Pointer to the callback interface.
@@ -82,7 +134,7 @@ public:
 	 * callback is called with new samples.
 	 * \param samplingRate The sampling rate of the ADC.
 	 **/
-	void start(SamplingRate samplingRate = SAMPLING_RATE_50HZ);
+	void start(AD7705settings ad7705settings = AD7705settings() );
 
 	/**
 	 * Stops the data acquistion
@@ -95,6 +147,7 @@ private:
 	const uint32_t speed = 500000;
 	const uint16_t delay = 0;
 	const uint8_t bpw   = 8;
+	uint8_t commreg = 0;
 	int fd = 0;
 	std::thread* daqThread = NULL;
 	int running = 0;
