@@ -27,7 +27,7 @@
 // screen.
 class AD7705printSampleCallback : public AD7705callback {
 	virtual void hasSample(float v) {
-		printf("v = %f\n",v);
+		printf("v = %e\n",v);
 	}
 };
 
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
 	AD7705printSampleCallback ad7705printSampleCallback;
 	ad7705comm->setCallback(&ad7705printSampleCallback);
 	AD7705settings s;
-	s.channel = AD7705settings::AIN2;
+	s.channel = AD7705settings::AIN1;
 	s.samplingRate = AD7705settings::FS50HZ;
 	ad7705comm->start(s);
 	getchar();

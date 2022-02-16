@@ -161,8 +161,8 @@ private:
 	int16_t readData(int fd);
 	static void run(AD7705Comm* ad7705comm);
 
-        inline float pgaGainIndexToGain(AD7705settings::PGAGains gainIndex) {
-		return (float)(1 << gainIndex);
+        inline float pgaGain() {
+		return (float)(1 << ad7705settings.pgaGain);
 	}
 
 	inline uint8_t commReg() {

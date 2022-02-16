@@ -42,7 +42,9 @@ void AD7705Comm::writeReset(int fd) {
 	int ret = spi_transfer(fd, tx, rx, 5);
 	
 	if (ret < 1) {
+#ifdef DEBUG
 		printf("\nerr=%d when trying to reset. \n",ret);
+#endif
 		throw "Can't send spi message";
 	}
 }
@@ -107,7 +109,8 @@ void AD7705Comm::run(AD7705Comm* ad7705comm) {
 		ad7705comm->writeReg(ad7705comm->fd, ad7705comm->commReg() | 0x38);
 		// read the data register by performing two 8 bit reads
 		const float norm = 0x8000;
-		const float value =(ad7705comm->readData(ad7705comm->fd))/norm * ADC_REF;
+		const float value =(ad7705comm->readData(ad7705comm->fd))/norm *
+			ADC_REF / ad7705comm->pgaGain();
 		if (ad7705comm->ad7705callback) {
 			ad7705comm->ad7705callback->hasSample(value);
 		}
