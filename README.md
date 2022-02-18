@@ -79,6 +79,6 @@ Stop the data acquisition:
 
 ## Author: Bernd Porr
 
-   bernd.porr@glasgow.ac.uk
-   mail@berndporr.me.uk
-   www.berndporr.me.uk
+   - bernd.porr@glasgow.ac.uk
+   - mail@berndporr.me.uk
+   - www.berndporr.me.uk
