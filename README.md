@@ -24,19 +24,7 @@ The design files (for EAGLE) are in the subdirectory "pcb".
 
 ![alt tag](circuit.png)
 
-## Building the demo / test:
-
-We use a submodule (another git repo within this repo) do:
-```
-git submodule init
-git submodule update
-```
-
-Install the following packages:
-```
-apt-get install libcurl4-openssl-dev
-apt-get install libfcgi-dev
-```
+## Building:
 
 To build:
 
@@ -44,11 +32,16 @@ To build:
 
     make
 
-## Running
+## Install
 
-Run it with the command:
+    sudo make install
 
-    sudo ./ad7705_test
+## Usage example
+
+In the subdir example is a simple application which prints the ADC data to the screen.
+
+    cd example
+    sudo ./ad7705_printer
 
 ## General usage
 
@@ -58,9 +51,8 @@ The online doc is here: http://berndporr.github.io/rpi_AD7705_daq/
 
 ```
 class AD7705printSampleCallback : public AD7705callback {
-	virtual void hasSample(int v) {
+	virtual void hasSample(float v) {
 		// process your sample here
-		printf("v = %d\n",v);
 	}
 };
 ```
@@ -85,48 +77,8 @@ Stop the data acquisition:
 	ad7705comm.stop();
 ```
 
-
-## Website which shows realtime data using FastCGI
-
-FastCGI is a concept where a webserver connects to an internal
-fastcgi-server running on a certain port or socket which provides
-the realtime data. Here, the fastCGI server is our AD7705
-measurement program which continously measures the data from a
-temperature sensor.
-
-### FastCGI server
-
-Start `ad7705fastcgi`
-in the background with:
-```
-nohup ./ad7705fastcgi &
-```
-which creates a socket under `\tmp\adc7705socket` to communicate with
-the fastcgi server.
-
-### Configuring the nginx for FastCGI
-
- 1. copy the the nginx config file `website/nginx-sites-enabled-default` to your
-    nginx config directory `/etc/nginx/sites-enabled/default`.
- 2. copy `website/index.html` to `/var/www/html`.
- 
-Then point your web-browser to your raspberry pi. You should see the current
-temperatue reading on the screen and a plot with dygraph.
-
-The demo uses JSON packages which are retrieved via the server
-subdirectory `/data/`. Here, it's just a timestamp in epoch time and
-the temperature. The class `json_fastcgi_web_api.h` is not just a
-wrapper for the fast-CGI method but is also able to package JSON which
-can then be read by JavaScipt in the browser.
-
-See https://github.com/berndporr/json_fastcgi_web_api for the complete
-documentation of the fastCGI server.
-
-![alt tag](screenshot.png)
-
-
 ## Author: Bernd Porr
 
-bernd.porr@glasgow.ac.uk
-mail@berndporr.me.uk
-www.berndporr.me.uk
+   bernd.porr@glasgow.ac.uk
+   mail@berndporr.me.uk
+   www.berndporr.me.uk
