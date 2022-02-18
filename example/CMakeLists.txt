@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.1.0)
+find_package (Threads)
+add_executable (ad7705_printer ad7705_demo.cpp)
+target_link_libraries(ad7705_printer ad7705 rt ${CMAKE_THREAD_LIBS_INIT})
+target_include_directories(ad7705_printer PRIVATE ..)
