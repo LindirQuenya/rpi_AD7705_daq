@@ -15,9 +15,6 @@ the data. This is done via interrupts / poll
 so that the ADC process sleeps until new data becomes
 available.
 
-Further down I demonstrate how to use UDP to transmit the data to a web
-page via PHP, JSON packets and client-side javascript!
-
 ## Hardware design
 
 The design files (for EAGLE) are in the subdirectory "pcb".
