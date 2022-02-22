@@ -65,7 +65,7 @@ Instantiate the AD7705 class and the callback handler:
 
 Start the data acquisition:
 ```
-	ad7705comm.start(AD7705Comm::SAMPLING_RATE_50HZ);
+	ad7705comm.start();
 ```
 once `start` has been called the data will be arriving.
 
