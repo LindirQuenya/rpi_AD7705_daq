@@ -44,12 +44,11 @@ public:
 
 
 /**
- * Contains all settings for the data acquisition. They
- * have default settings for all settings which work.
+ * Contains all settings for the data acquisition.
  **/
 struct AD7705settings {
 	/**
-	 * The SPI device used.
+	 * The SPI device in /dev used.
 	 **/
 	std::string spiDevice = "/dev/spidev0.0";
 	
