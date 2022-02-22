@@ -13,7 +13,7 @@ add_subdirectory(example)
 
 # add_compile_options(-Wall -Wconversion -Wextra -pedantic)
 
-set(LIBSRC AD7705Comm.cpp  gpio-sysfs.cpp)
+set(LIBSRC AD7705Comm.cpp)
 set(LIBINCLUDE AD7705Comm.h)
 
 add_library(ad7705

@@ -8,8 +8,6 @@
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License.
- *
- * Cross-compile with cross-gcc -I/path/to/cross-kernel/include
  */
 
 #include <stdint.h>
@@ -27,7 +25,7 @@
 // screen.
 class AD7705printSampleCallback : public AD7705callback {
 	virtual void hasSample(float v) {
-		printf("v = %e\n",v);
+		printf("%e\n",v);
 	}
 };
 
@@ -35,15 +33,14 @@ class AD7705printSampleCallback : public AD7705callback {
 // Registers the callback.
 // Prints data till the user presses a key.
 int main(int argc, char *argv[]) {
-	AD7705Comm* ad7705comm = new AD7705Comm();
-	AD7705printSampleCallback ad7705printSampleCallback;
-	ad7705comm->setCallback(&ad7705printSampleCallback);
 	AD7705settings s;
 	s.channel = AD7705settings::AIN1;
 	s.samplingRate = AD7705settings::FS50HZ;
-	ad7705comm->start(s);
+	AD7705Comm ad7705comm(s);
+	AD7705printSampleCallback ad7705printSampleCallback;
+	ad7705comm.registerCallback(&ad7705printSampleCallback);
+	ad7705comm.start();
 	getchar();
-	ad7705comm->stop();
-	delete ad7705comm;
+	ad7705comm.stop();
 	return 0;
 }

@@ -1,11 +1,16 @@
 #include "AD7705Comm.h"
 
-#include "gpio-sysfs.h"
+#include <fcntl.h>
+#include <poll.h>
+#include <string.h>
 
-AD7705Comm::AD7705Comm(const char* spiDevice) {
-	fd = open(spiDevice, O_RDWR);
+#define SYSFS_GPIO_DIR "/sys/class/gpio"
+#define MAX_BUF 256
+
+AD7705Comm::AD7705Comm(AD7705settings settings) {
+	fd = open(settings.spiDevice.c_str(), O_RDWR);
 	if (fd < 0)
-		throw "can't open device";
+		throw "Can't open device";
 	
 	// set SPI mode
 	int ret = ioctl(fd, SPI_IOC_WR_MODE, &mode);
@@ -18,8 +23,18 @@ AD7705Comm::AD7705Comm(const char* spiDevice) {
 	}
 }
 
-void AD7705Comm::setCallback(AD7705callback* cb) {
+AD7705Comm::~AD7705Comm() {
+	stop();
+	close(fd);
+}
+
+
+void AD7705Comm::registerCallback(AD7705callback* cb) {
 	ad7705callback = cb;
+}
+
+void AD7705Comm::unRegisterCallback() {
+	ad7705callback = nullptr;
 }
 
 int AD7705Comm::spi_transfer(int fd, uint8_t* tx, uint8_t* rx, int n) {
@@ -84,20 +99,13 @@ int16_t AD7705Comm::readData(int fd) {
 
 
 void AD7705Comm::run(AD7705Comm* ad7705comm) {
-	// enables sysfs entry for the GPIO pin
-	SysGPIO dataReadyGPIO(ad7705comm->drdy_GPIO);
-	dataReadyGPIO.gpio_export();
-	// set to input
-	dataReadyGPIO.gpio_set_dir(false);
-	// set interrupt detection to falling edge
-	dataReadyGPIO.gpio_set_edge("falling");
-	// get a file descriptor for the GPIO pin
-	int sysfs_fd = dataReadyGPIO.gpio_fd_open();	
+	// get a file descriptor for the IRQ GPIO pin
+	int sysfs_fd = getSysfsIRQfd(ad7705comm->drdy_GPIO);
 	ad7705comm->running = 1;
 	while (ad7705comm->running) {
 		// let's wait for data for max one second
 		// goes to sleep until an interrupt happens
-		int ret = dataReadyGPIO.gpio_poll(sysfs_fd,1000);
+		int ret = fdPoll(sysfs_fd,1000);
 		if (ret<1) {
 #ifdef DEBUG
 			fprintf(stderr,"Poll error %d\n",ret);
@@ -111,23 +119,21 @@ void AD7705Comm::run(AD7705Comm* ad7705comm) {
 		const float norm = 0x8000;
 		const float value =(ad7705comm->readData(ad7705comm->fd))/norm *
 			ADC_REF / ad7705comm->pgaGain();
-		if (ad7705comm->ad7705callback) {
+		if (nullptr != ad7705comm->ad7705callback) {
 			ad7705comm->ad7705callback->hasSample(value);
 		}
 	}
-	close(ad7705comm->fd);
 	close(sysfs_fd);
-	dataReadyGPIO.gpio_unexport();
+	gpio_unexport(ad7705comm->drdy_GPIO);
 }
 
 
-void AD7705Comm::start(AD7705settings settings) {
-	if (daqThread) {
-		throw "Called while DAQ is already running.";
+void AD7705Comm::start() {
+	if (nullptr != daqThread) {
+		// already running
+		return;
 	}
-	
-	ad7705settings = settings;
-	// resets the AD7705 so that it expects a write to the communication register
+
 #ifdef DEBUG
 	fprintf(stderr,"Sending reset.\n");
 #endif
@@ -144,7 +150,7 @@ void AD7705Comm::start(AD7705settings settings) {
 	writeReg(fd,0x40 | (ad7705settings.mode << 2) | ( ad7705settings.pgaGain << 3) );
 
 #ifdef DEBUG
-	fprintf(stderr,"Receiving data.\n");
+	fprintf(stderr,"Starting thread.\n");
 #endif
 	
 	daqThread = new std::thread(run,this);
@@ -153,9 +159,103 @@ void AD7705Comm::start(AD7705settings settings) {
 
 void AD7705Comm::stop() {
 	running = 0;
-	if (daqThread) {
+	if (nullptr != daqThread) {
 		daqThread->join();
 		delete daqThread;
-		daqThread = NULL;
+		daqThread = nullptr;
 	}
+}
+
+int AD7705Comm::getSysfsIRQfd(int gpio) {
+	  int fd, len;
+	  char buf[MAX_BUF];
+ 
+	  fd = open(SYSFS_GPIO_DIR "/export", O_WRONLY);
+	  if (fd < 0) {
+#ifdef DEBUG
+		  perror("gpio/export");
+#endif
+		  return fd;
+	  }
+	  
+	  len = snprintf(buf, sizeof(buf), "%d", gpio);
+	  write(fd, buf, len);
+	  close(fd);
+ 
+	  snprintf(buf, sizeof(buf), SYSFS_GPIO_DIR  "/gpio%d/direction", gpio);
+	  
+	  fd = open(buf, O_WRONLY);
+	  if (fd < 0) {
+#ifdef DEBUG
+		  perror("gpio/direction");
+#endif
+		  return fd;
+	  }
+	  
+	  write(fd, "in", 3);
+ 
+	  close(fd);
+
+	  const char edge[] = "falling";
+	  snprintf(buf, sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/edge", gpio);
+	  
+	  fd = open(buf, O_WRONLY);
+	  if (fd < 0) {
+#ifdef DEBUG
+		  perror("gpio/set-edge");
+#endif
+		  return fd;
+	  }
+	  
+	  write(fd, edge, strlen(edge) + 1); 
+	  close(fd);
+	  
+	  snprintf(buf, sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/value", gpio);
+	  
+	  fd = open(buf, O_RDONLY | O_NONBLOCK );
+	  if (fd < 0) {
+#ifdef DEBUG
+		  perror("gpio/fd_open");
+#endif
+	  }
+	  return fd;
+}
+
+void AD7705Comm::gpio_unexport(int gpio) {
+	int fd, len;
+	char buf[MAX_BUF];
+	
+	fd = open(SYSFS_GPIO_DIR "/unexport", O_WRONLY);
+	if (fd < 0) {
+#ifdef DEBUG
+		perror("gpio/unexport");
+#endif
+	}
+	
+	len = snprintf(buf, sizeof(buf), "%d", gpio);
+	write(fd, buf, len);
+	close(fd);
+}
+
+
+int AD7705Comm::fdPoll(int gpio_fd, int timeout)
+{
+	struct pollfd fdset[1];
+	int nfds = 1;
+	int rc;
+	char buf[MAX_BUF];
+	
+	memset((void*)fdset, 0, sizeof(fdset));
+	
+	fdset[0].fd = gpio_fd;
+	fdset[0].events = POLLPRI;
+	
+	rc = poll(fdset, nfds, timeout);
+	
+	if (fdset[0].revents & POLLPRI) {
+		// dummy read
+		read(fdset[0].fd, buf, MAX_BUF);
+	}
+	
+	return rc;
 }

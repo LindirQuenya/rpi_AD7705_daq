@@ -22,8 +22,11 @@
 #include <linux/types.h>
 #include <linux/spi/spidev.h>
 #include <thread>  
+#include <string>
 
-
+#ifndef NDEBUG
+#define DEBUG
+#endif
 
 
 /**
@@ -39,6 +42,8 @@ public:
 };
 
 struct AD7705settings {
+	std::string spiDevice = "/dev/spidev0.0";
+	
 	/**
 	 * Sampling rates
 	 **/
@@ -109,32 +114,33 @@ class AD7705Comm {
 
 public:
 	/**
-	 * Constructor with the spiDevice. The default device
-	 * is /dev/spidev0.0.
-	 * \param spiDevice The raw /dev spi device.
+	 * Constructor. Opens the SPI device and waits for to start
+	 * the acquisition.
+	 * \param settings All AD7705 settings.
 	 **/
-	AD7705Comm(const char* spiDevice = "/dev/spidev0.0");
+	AD7705Comm(AD7705settings settings);
 
 	/**
 	 * Destructor which makes sure the data acquisition
 	 * has stopped.
 	 **/
-	~AD7705Comm() {
-		stop();
-	}
+	~AD7705Comm();
        
 	/**
-	 * Sets the callback which is called whenever there is a sample.
+	 * Registers the callback which is called whenever there is a sample.
 	 * \param cb Pointer to the callback interface.
 	 **/
-	void setCallback(AD7705callback* cb);
+	void registerCallback(AD7705callback* cb);
 
 	/**
-	 * Starts the data acquisition in the background and the
-	 * callback is called with new samples.
-	 * \param samplingRate The sampling rate of the ADC.
+	 * Unregisters the callback to the callback interface.
 	 **/
-	void start(AD7705settings settings = AD7705settings() );
+	void unRegisterCallback();
+
+	/**
+	 * Starts the data acquisition
+	 **/
+	void start();
 
 	/**
 	 * Stops the data acquistion
@@ -149,9 +155,9 @@ private:
 	const uint8_t bpw   = 8;
 	static constexpr float ADC_REF = 2.5;
 	int fd = 0;
-	std::thread* daqThread = NULL;
+	std::thread* daqThread = nullptr;
 	int running = 0;
-	AD7705callback* ad7705callback = NULL;
+	AD7705callback* ad7705callback = nullptr;
 	AD7705settings ad7705settings;
 
 	int spi_transfer(int fd, uint8_t* tx, uint8_t* rx, int n);
@@ -169,6 +175,9 @@ private:
 		return ((uint8_t)(ad7705settings.channel));
 	}
 
+	static int getSysfsIRQfd(int gpio);
+	static int fdPoll(int gpio_fd, int timeout);
+	static void gpio_unexport(int gpio);
 };
 
 
