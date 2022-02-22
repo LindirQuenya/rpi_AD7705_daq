@@ -150,7 +150,7 @@ void AD7705Comm::start() {
 	writeReg(fd,0x40 | (ad7705settings.mode << 2) | ( ad7705settings.pgaGain << 3) );
 
 #ifdef DEBUG
-	fprintf(stderr,"Starting thread.\n");
+	fprintf(stderr,"Starting DAQ thread.\n");
 #endif
 	
 	daqThread = new std::thread(run,this);
@@ -163,6 +163,9 @@ void AD7705Comm::stop() {
 		daqThread->join();
 		delete daqThread;
 		daqThread = nullptr;
+#ifdef DEBUG
+	fprintf(stderr,"DAQ thread stopped.\n");
+#endif	
 	}
 }
 
