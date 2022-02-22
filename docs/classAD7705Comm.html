@@ -96,19 +96,24 @@ $(document).ready(function(){initNavTree('classAD7705Comm.html',''); initResizab
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a743ca267f21f2f096a750a59981fdf7b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAD7705Comm.html#a743ca267f21f2f096a750a59981fdf7b">AD7705Comm</a> (const char *spiDevice=&quot;/dev/spidev0.0&quot;)</td></tr>
-<tr class="memdesc:a743ca267f21f2f096a750a59981fdf7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with the spiDevice.  <a href="classAD7705Comm.html#a743ca267f21f2f096a750a59981fdf7b">More...</a><br /></td></tr>
-<tr class="separator:a743ca267f21f2f096a750a59981fdf7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d06fa3bdea3ee1616dcab0f406aca8a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAD7705Comm.html#a1d06fa3bdea3ee1616dcab0f406aca8a">AD7705Comm</a> (<a class="el" href="structAD7705settings.html">AD7705settings</a> settings)</td></tr>
+<tr class="memdesc:a1d06fa3bdea3ee1616dcab0f406aca8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classAD7705Comm.html#a1d06fa3bdea3ee1616dcab0f406aca8a">More...</a><br /></td></tr>
+<tr class="separator:a1d06fa3bdea3ee1616dcab0f406aca8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f101db8298da94c1bb82c2735015eb1"><td class="memItemLeft" align="right" valign="top"><a id="a6f101db8298da94c1bb82c2735015eb1"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAD7705Comm.html#a6f101db8298da94c1bb82c2735015eb1">~AD7705Comm</a> ()</td></tr>
 <tr class="memdesc:a6f101db8298da94c1bb82c2735015eb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor which makes sure the data acquisition has stopped. <br /></td></tr>
 <tr class="separator:a6f101db8298da94c1bb82c2735015eb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae95e391a92d28c618b6290805c055031"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAD7705Comm.html#ae95e391a92d28c618b6290805c055031">setCallback</a> (<a class="el" href="classAD7705callback.html">AD7705callback</a> *cb)</td></tr>
-<tr class="memdesc:ae95e391a92d28c618b6290805c055031"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the callback which is called whenever there is a sample.  <a href="classAD7705Comm.html#ae95e391a92d28c618b6290805c055031">More...</a><br /></td></tr>
-<tr class="separator:ae95e391a92d28c618b6290805c055031"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acfc65a8038b9261e6b6673995bd62601"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAD7705Comm.html#acfc65a8038b9261e6b6673995bd62601">start</a> (<a class="el" href="structAD7705settings.html">AD7705settings</a> settings=<a class="el" href="structAD7705settings.html">AD7705settings</a>())</td></tr>
-<tr class="memdesc:acfc65a8038b9261e6b6673995bd62601"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the data acquisition in the background and the callback is called with new samples.  <a href="classAD7705Comm.html#acfc65a8038b9261e6b6673995bd62601">More...</a><br /></td></tr>
-<tr class="separator:acfc65a8038b9261e6b6673995bd62601"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bf730b355147bde014465c37b17623a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAD7705Comm.html#a3bf730b355147bde014465c37b17623a">registerCallback</a> (<a class="el" href="classAD7705callback.html">AD7705callback</a> *cb)</td></tr>
+<tr class="memdesc:a3bf730b355147bde014465c37b17623a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers the callback which is called whenever there is a sample.  <a href="classAD7705Comm.html#a3bf730b355147bde014465c37b17623a">More...</a><br /></td></tr>
+<tr class="separator:a3bf730b355147bde014465c37b17623a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a302b3a43102d7675a4f27382f388d1b4"><td class="memItemLeft" align="right" valign="top"><a id="a302b3a43102d7675a4f27382f388d1b4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAD7705Comm.html#a302b3a43102d7675a4f27382f388d1b4">unRegisterCallback</a> ()</td></tr>
+<tr class="memdesc:a302b3a43102d7675a4f27382f388d1b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unregisters the callback to the callback interface. <br /></td></tr>
+<tr class="separator:a302b3a43102d7675a4f27382f388d1b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affc6ded162b91b5e55ed791451ef2373"><td class="memItemLeft" align="right" valign="top"><a id="affc6ded162b91b5e55ed791451ef2373"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAD7705Comm.html#affc6ded162b91b5e55ed791451ef2373">start</a> ()</td></tr>
+<tr class="memdesc:affc6ded162b91b5e55ed791451ef2373"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the data acquisition. <br /></td></tr>
+<tr class="separator:affc6ded162b91b5e55ed791451ef2373"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6817c77451e4a0f7a85a79c1c39d158e"><td class="memItemLeft" align="right" valign="top"><a id="a6817c77451e4a0f7a85a79c1c39d158e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAD7705Comm.html#a6817c77451e4a0f7a85a79c1c39d158e">stop</a> ()</td></tr>
 <tr class="memdesc:a6817c77451e4a0f7a85a79c1c39d158e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops the data acquistion. <br /></td></tr>
@@ -117,8 +122,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class reads data from the AD7705 in the background (separate thread) and calls a callback function whenever data is available. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a743ca267f21f2f096a750a59981fdf7b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a743ca267f21f2f096a750a59981fdf7b">&#9670;&nbsp;</a></span>AD7705Comm()</h2>
+<a id="a1d06fa3bdea3ee1616dcab0f406aca8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d06fa3bdea3ee1616dcab0f406aca8a">&#9670;&nbsp;</a></span>AD7705Comm()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -126,17 +131,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">AD7705Comm::AD7705Comm </td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>spiDevice</em> = <code>&quot;/dev/spidev0.0&quot;</code></td><td>)</td>
+          <td class="paramtype"><a class="el" href="structAD7705settings.html">AD7705settings</a>&#160;</td>
+          <td class="paramname"><em>settings</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Constructor with the spiDevice. </p>
-<p>The default device is /dev/spidev0.0. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Constructor. </p>
+<p>Opens the SPI device and waits for to start the acquisition. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">spiDevice</td><td>The raw /dev spi device. </td></tr>
+    <tr><td class="paramname">settings</td><td>All AD7705 settings. </td></tr>
   </table>
   </dd>
 </dl>
@@ -144,14 +149,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae95e391a92d28c618b6290805c055031"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae95e391a92d28c618b6290805c055031">&#9670;&nbsp;</a></span>setCallback()</h2>
+<a id="a3bf730b355147bde014465c37b17623a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bf730b355147bde014465c37b17623a">&#9670;&nbsp;</a></span>registerCallback()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void AD7705Comm::setCallback </td>
+          <td class="memname">void AD7705Comm::registerCallback </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classAD7705callback.html">AD7705callback</a> *&#160;</td>
           <td class="paramname"><em>cb</em></td><td>)</td>
@@ -160,36 +165,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
 </div><div class="memdoc">
 
-<p>Sets the callback which is called whenever there is a sample. </p>
+<p>Registers the callback which is called whenever there is a sample. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cb</td><td>Pointer to the callback interface. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="acfc65a8038b9261e6b6673995bd62601"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acfc65a8038b9261e6b6673995bd62601">&#9670;&nbsp;</a></span>start()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void AD7705Comm::start </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structAD7705settings.html">AD7705settings</a>&#160;</td>
-          <td class="paramname"><em>settings</em> = <code><a class="el" href="structAD7705settings.html">AD7705settings</a>()</code></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Starts the data acquisition in the background and the callback is called with new samples. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">samplingRate</td><td>The sampling rate of the ADC. </td></tr>
   </table>
   </dd>
 </dl>

@@ -179,8 +179,14 @@ int AD7705Comm::getSysfsIRQfd(int gpio) {
 	  }
 	  
 	  len = snprintf(buf, sizeof(buf), "%d", gpio);
-	  write(fd, buf, len);
+	  int r = write(fd, buf, len);
 	  close(fd);
+	  if (r < 0) {
+#ifdef DEBUG
+		  perror("gpio/export");
+#endif
+		  return fd;
+	  }
  
 	  snprintf(buf, sizeof(buf), SYSFS_GPIO_DIR  "/gpio%d/direction", gpio);
 	  
@@ -192,10 +198,15 @@ int AD7705Comm::getSysfsIRQfd(int gpio) {
 		  return fd;
 	  }
 	  
-	  write(fd, "in", 3);
- 
+	  r = write(fd, "in", 3);
 	  close(fd);
-
+	  if (r < 0) {
+#ifdef DEBUG
+		  perror("gpio/export");
+#endif
+		  return fd;
+	  }
+ 
 	  const char edge[] = "falling";
 	  snprintf(buf, sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/edge", gpio);
 	  
@@ -207,8 +218,14 @@ int AD7705Comm::getSysfsIRQfd(int gpio) {
 		  return fd;
 	  }
 	  
-	  write(fd, edge, strlen(edge) + 1); 
+	  r = write(fd, edge, strlen(edge) + 1); 
 	  close(fd);
+	  if (r < 0) {
+#ifdef DEBUG
+		  perror("gpio/export");
+#endif
+		  return fd;
+	  }
 	  
 	  snprintf(buf, sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/value", gpio);
 	  
@@ -233,7 +250,13 @@ void AD7705Comm::gpio_unexport(int gpio) {
 	}
 	
 	len = snprintf(buf, sizeof(buf), "%d", gpio);
-	write(fd, buf, len);
+	int r = write(fd, buf, len);
+	if (r < 0) {
+#ifdef DEBUG
+		perror("gpio/export");
+#endif
+	}
+
 	close(fd);
 }
 
@@ -254,8 +277,14 @@ int AD7705Comm::fdPoll(int gpio_fd, int timeout)
 	
 	if (fdset[0].revents & POLLPRI) {
 		// dummy read
-		read(fdset[0].fd, buf, MAX_BUF);
+		int r = read(fdset[0].fd, buf, MAX_BUF);
+		if (r < 0) {
+#ifdef DEBUG
+			perror("gpio/export");
+#endif
+			return r;
+		}
 	}
-	
+
 	return rc;
 }

@@ -3,11 +3,12 @@ var NAVTREEINDEX0 =
 "AD7705Comm_8h_source.html":[2,0,0],
 "annotated.html":[1,0],
 "classAD7705Comm.html":[1,0,1],
+"classAD7705Comm.html#a1d06fa3bdea3ee1616dcab0f406aca8a":[1,0,1,0],
+"classAD7705Comm.html#a302b3a43102d7675a4f27382f388d1b4":[1,0,1,5],
+"classAD7705Comm.html#a3bf730b355147bde014465c37b17623a":[1,0,1,2],
 "classAD7705Comm.html#a6817c77451e4a0f7a85a79c1c39d158e":[1,0,1,4],
 "classAD7705Comm.html#a6f101db8298da94c1bb82c2735015eb1":[1,0,1,1],
-"classAD7705Comm.html#a743ca267f21f2f096a750a59981fdf7b":[1,0,1,0],
-"classAD7705Comm.html#acfc65a8038b9261e6b6673995bd62601":[1,0,1,3],
-"classAD7705Comm.html#ae95e391a92d28c618b6290805c055031":[1,0,1,2],
+"classAD7705Comm.html#affc6ded162b91b5e55ed791451ef2373":[1,0,1,3],
 "classAD7705callback.html":[1,0,0],
 "classAD7705callback.html#a0af40415519aef054c0934f6548bab33":[1,0,0,0],
 "classes.html":[1,1],
@@ -16,8 +17,8 @@ var NAVTREEINDEX0 =
 "functions_enum.html":[1,2,3],
 "functions_func.html":[1,2,1],
 "functions_vars.html":[1,2,2],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "pages.html":[],
 "structAD7705settings.html":[1,0,2],
 "structAD7705settings.html#a2bae523dbced40665cd146cd32dc2dde":[1,0,2,1],
@@ -43,5 +44,6 @@ var NAVTREEINDEX0 =
 "structAD7705settings.html#aeff630774797ff5ed12ede8942c85048a9b15f460e8f73ea802cd8248f2926f7e":[1,0,2,2,7],
 "structAD7705settings.html#aeff630774797ff5ed12ede8942c85048aca77bbc26fa761ba8db4f383eeed741a":[1,0,2,2,1],
 "structAD7705settings.html#aeff630774797ff5ed12ede8942c85048aecffc6628fa7e1d68e803983dcfa01c4":[1,0,2,2,3],
-"structAD7705settings.html#aeff630774797ff5ed12ede8942c85048af81bfa6c01f734eed2966ea1ff716da8":[1,0,2,2,4]
+"structAD7705settings.html#aeff630774797ff5ed12ede8942c85048af81bfa6c01f734eed2966ea1ff716da8":[1,0,2,2,4],
+"structAD7705settings.html#af5538130b5871c27d4036752796a0662":[1,0,2,8]
 };

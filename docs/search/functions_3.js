@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['_7ead7705comm_25',['~AD7705Comm',['../classAD7705Comm.html#a6f101db8298da94c1bb82c2735015eb1',1,'AD7705Comm']]]
+  ['start_24',['start',['../classAD7705Comm.html#affc6ded162b91b5e55ed791451ef2373',1,'AD7705Comm']]],
+  ['stop_25',['stop',['../classAD7705Comm.html#a6817c77451e4a0f7a85a79c1c39d158e',1,'AD7705Comm']]]
 ];

@@ -27,5 +27,6 @@ var structAD7705settings =
     [ "channel", "structAD7705settings.html#a3b2f0e72c86477180fdf42f39451621a", null ],
     [ "mode", "structAD7705settings.html#a6227048d10f7705259a9ad474dfe7fc0", null ],
     [ "pgaGain", "structAD7705settings.html#aad444bb1790b9c3aece3272abbeec860", null ],
-    [ "samplingRate", "structAD7705settings.html#a892d49e673e755e710a68012ab050d60", null ]
+    [ "samplingRate", "structAD7705settings.html#a892d49e673e755e710a68012ab050d60", null ],
+    [ "spiDevice", "structAD7705settings.html#af5538130b5871c27d4036752796a0662", null ]
 ];
