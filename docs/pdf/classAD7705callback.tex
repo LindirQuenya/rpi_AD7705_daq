@@ -12,7 +12,6 @@ Callback for new samples which needs to be implemented by the main program.
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{classAD7705callback_a0af40415519aef054c0934f6548bab33}\label{classAD7705callback_a0af40415519aef054c0934f6548bab33}} 
 virtual void \mbox{\hyperlink{classAD7705callback_a0af40415519aef054c0934f6548bab33}{has\+Sample}} (float sample)=0
 \begin{DoxyCompactList}\small\item\em Called after a sample has arrived. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
@@ -21,6 +20,24 @@ virtual void \mbox{\hyperlink{classAD7705callback_a0af40415519aef054c0934f6548ba
 Callback for new samples which needs to be implemented by the main program. 
 
 The function has\+Sample needs to be overloaded in the main program. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classAD7705callback_a0af40415519aef054c0934f6548bab33}\label{classAD7705callback_a0af40415519aef054c0934f6548bab33}} 
+\index{AD7705callback@{AD7705callback}!hasSample@{hasSample}}
+\index{hasSample@{hasSample}!AD7705callback@{AD7705callback}}
+\doxysubsubsection{\texorpdfstring{hasSample()}{hasSample()}}
+{\footnotesize\ttfamily virtual void A\+D7705callback\+::has\+Sample (\begin{DoxyParamCaption}\item[{float}]{sample }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Called after a sample has arrived. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sample} & Contains the A\+DC reading in Volt. \\
+\hline
+\end{DoxyParams}
+
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

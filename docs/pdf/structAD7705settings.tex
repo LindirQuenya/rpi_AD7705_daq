@@ -1,5 +1,14 @@
 \hypertarget{structAD7705settings}{}\doxysection{A\+D7705settings Struct Reference}
 \label{structAD7705settings}\index{AD7705settings@{AD7705settings}}
+
+
+Contains all settings for the data acquisition.  
+
+
+
+
+{\ttfamily \#include $<$A\+D7705\+Comm.\+h$>$}
+
 \doxysubsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
@@ -37,8 +46,8 @@ enum \mbox{\hyperlink{structAD7705settings_a2bae523dbced40665cd146cd32dc2dde}{Mo
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{structAD7705settings_af5538130b5871c27d4036752796a0662}\label{structAD7705settings_af5538130b5871c27d4036752796a0662}} 
-std\+::string {\bfseries spi\+Device} = \char`\"{}/dev/spidev0.\+0\char`\"{}
-\item 
+std\+::string \mbox{\hyperlink{structAD7705settings_af5538130b5871c27d4036752796a0662}{spi\+Device}} = \char`\"{}/dev/spidev0.\+0\char`\"{}
+\begin{DoxyCompactList}\small\item\em The S\+PI device used. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structAD7705settings_a892d49e673e755e710a68012ab050d60}\label{structAD7705settings_a892d49e673e755e710a68012ab050d60}} 
 \mbox{\hyperlink{structAD7705settings_a954e306fd2839711bc9080446450f0ec}{Sampling\+Rates}} \mbox{\hyperlink{structAD7705settings_a892d49e673e755e710a68012ab050d60}{sampling\+Rate}} = F\+S50\+HZ
 \begin{DoxyCompactList}\small\item\em Sampling rate requested. \end{DoxyCompactList}\item 
@@ -52,6 +61,11 @@ std\+::string {\bfseries spi\+Device} = \char`\"{}/dev/spidev0.\+0\char`\"{}
 \mbox{\hyperlink{structAD7705settings_a2bae523dbced40665cd146cd32dc2dde}{Modes}} \mbox{\hyperlink{structAD7705settings_a6227048d10f7705259a9ad474dfe7fc0}{mode}} = Unipolar
 \begin{DoxyCompactList}\small\item\em Unipolar or biploar. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
+
+\doxysubsection{Detailed Description}
+Contains all settings for the data acquisition. 
+
+They have default settings for all settings which work. 
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

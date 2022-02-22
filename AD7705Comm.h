@@ -37,11 +37,20 @@ class AD7705callback {
 public:
 	/**
 	 * Called after a sample has arrived.
+	 * \param sample Contains the ADC reading in Volt.
 	 **/
 	virtual void hasSample(float sample) = 0;
 };
 
+
+/**
+ * Contains all settings for the data acquisition. They
+ * have default settings for all settings which work.
+ **/
 struct AD7705settings {
+	/**
+	 * The SPI device used.
+	 **/
 	std::string spiDevice = "/dev/spidev0.0";
 	
 	/**
