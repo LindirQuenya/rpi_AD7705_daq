@@ -173,7 +173,10 @@ private:
 	void writeReg(int fd, uint8_t v);
 	uint8_t readReg(int fd);
 	int16_t readData(int fd);
-	static void run(AD7705Comm* ad7705comm);
+	void run();
+	static void exec(AD7705Comm* ad7705comm) {
+		ad7705comm->run();
+	}
 
         inline float pgaGain() {
 		return (float)(1 << ad7705settings.pgaGain);

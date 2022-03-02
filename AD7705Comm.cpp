@@ -98,11 +98,11 @@ int16_t AD7705Comm::readData(int fd) {
 }
 
 
-void AD7705Comm::run(AD7705Comm* ad7705comm) {
+void AD7705Comm::run() {
 	// get a file descriptor for the IRQ GPIO pin
-	int sysfs_fd = getSysfsIRQfd(ad7705comm->drdy_GPIO);
-	ad7705comm->running = 1;
-	while (ad7705comm->running) {
+	int sysfs_fd = getSysfsIRQfd(drdy_GPIO);
+	running = 1;
+	while (running) {
 		// let's wait for data for max one second
 		// goes to sleep until an interrupt happens
 		int ret = fdPoll(sysfs_fd,1000);
@@ -114,17 +114,17 @@ void AD7705Comm::run(AD7705Comm* ad7705comm) {
 		}
 		
 		// tell the AD7705 to read the data register (16 bits)
-		ad7705comm->writeReg(ad7705comm->fd, ad7705comm->commReg() | 0x38);
+		writeReg(fd, commReg() | 0x38);
 		// read the data register by performing two 8 bit reads
 		const float norm = 0x8000;
-		const float value =(ad7705comm->readData(ad7705comm->fd))/norm *
-			ADC_REF / ad7705comm->pgaGain();
-		if (nullptr != ad7705comm->ad7705callback) {
-			ad7705comm->ad7705callback->hasSample(value);
+		const float value =(readData(fd))/norm *
+			ADC_REF / pgaGain();
+		if (nullptr != ad7705callback) {
+			ad7705callback->hasSample(value);
 		}
 	}
 	close(sysfs_fd);
-	gpio_unexport(ad7705comm->drdy_GPIO);
+	gpio_unexport(drdy_GPIO);
 }
 
 
@@ -153,7 +153,7 @@ void AD7705Comm::start() {
 	fprintf(stderr,"Starting DAQ thread.\n");
 #endif
 	
-	daqThread = new std::thread(run,this);
+	daqThread = new std::thread(exec,this);
 }
 
 
