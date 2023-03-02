@@ -163,7 +163,7 @@ private:
 	const uint8_t bpw   = 8;
 	static constexpr float ADC_REF = 2.5;
 	int fd = 0;
-	std::thread* daqThread = nullptr;
+	std::thread daqThread;
 	int running = 0;
 	AD7705callback* ad7705callback = nullptr;
 	AD7705settings ad7705settings;
@@ -174,9 +174,6 @@ private:
 	uint8_t readReg(int fd);
 	int16_t readData(int fd);
 	void run();
-	static void exec(AD7705Comm* ad7705comm) {
-		ad7705comm->run();
-	}
 
         inline float pgaGain() {
 		return (float)(1 << ad7705settings.pgaGain);
@@ -187,7 +184,7 @@ private:
 	}
 
 	static int getSysfsIRQfd(int gpio);
-	static int fdPoll(int gpio_fd, int timeout);
+	static int fdPoll(int gpio_fd, int timeoutus);
 	static void gpio_unexport(int gpio);
 };
 

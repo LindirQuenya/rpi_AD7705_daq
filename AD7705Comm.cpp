@@ -129,10 +129,7 @@ void AD7705Comm::run() {
 
 
 void AD7705Comm::start() {
-	if (nullptr != daqThread) {
-		// already running
-		return;
-	}
+  if (running) return;
 
 #ifdef DEBUG
 	fprintf(stderr,"Sending reset.\n");
@@ -153,20 +150,17 @@ void AD7705Comm::start() {
 	fprintf(stderr,"Starting DAQ thread.\n");
 #endif
 	
-	daqThread = new std::thread(exec,this);
+	daqThread = std::thread(&AD7705Comm::run,this);
 }
 
 
 void AD7705Comm::stop() {
+	if (!running) return;
 	running = 0;
-	if (nullptr != daqThread) {
-		daqThread->join();
-		delete daqThread;
-		daqThread = nullptr;
+	daqThread.join();
 #ifdef DEBUG
 	fprintf(stderr,"DAQ thread stopped.\n");
 #endif	
-	}
 }
 
 int AD7705Comm::getSysfsIRQfd(int gpio) {
