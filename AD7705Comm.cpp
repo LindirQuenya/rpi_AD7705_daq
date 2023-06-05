@@ -11,7 +11,8 @@ AD7705Comm::AD7705Comm(AD7705settings settings) {
 	fd = open(settings.spiDevice.c_str(), O_RDWR);
 	if (fd < 0)
 		throw "Can't open device";
-	
+
+	ad7705settings = settings;
 	// set SPI mode
 	int ret = ioctl(fd, SPI_IOC_WR_MODE, &mode);
 	if (ret == -1) {
